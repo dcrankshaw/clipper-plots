@@ -203,10 +203,10 @@ def digits_train_fs():
 
 
 if __name__=='__main__':
-  # cache_lookup_latency()
-  # wiki_cache_hit_rate()
+  cache_lookup_latency()
+  wiki_cache_hit_rate()
   retrain_latency()
-  # anytime_predictions()
-  # feature_eval_latency()
+  anytime_predictions()
+  feature_eval_latency()
   digits_train_fs()
   
