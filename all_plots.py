@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import time
 import json
 
-# fig_dir = '/Users/crankshaw/Dropbox/sharelatex/ModelServingPaper/figs/gen-'
-fig_dir = 'gen_figs/gen-'
+fig_dir = '/Users/crankshaw/Dropbox/sharelatex/ModelServingPaper/figs/gen-'
+# fig_dir = 'gen_figs/gen-'
 bar_color = 'steelblue'
 formats = ['bo', 'r^', 'gv', 'k*']
 
@@ -93,12 +93,14 @@ def anytime_predictions():
       data = json.load(fp)
 
   fig, (ax_lat, ax_acc) = plt.subplots(2, sharex=True)
+  i = 0
   for s in ['-1', '10', '50', '100']:
       lab = s
-      if s == -1:
+      if s == '-1':
           lab = 'No SLA' 
-      ax_lat.plot(data['noise_params'], data['p99_lats'][s], '%s-' % formats[0], label=lab)
-      ax_acc.plot(data['noise_params'], data['accuracies'][s], '%s-' % formats[0], label=lab)
+      ax_lat.plot(data['noise_params'], data['p99_lats'][s], '%s-' % formats[i], label=lab)
+      ax_acc.plot(data['noise_params'], data['accuracies'][s], '%s-' % formats[i], label=lab)
+      i += 1
 
   axes = (ax_lat, ax_acc)
   for ax in axes:
@@ -203,10 +205,10 @@ def digits_train_fs():
 
 
 if __name__=='__main__':
-  cache_lookup_latency()
-  wiki_cache_hit_rate()
-  retrain_latency()
+  # cache_lookup_latency()
+  # wiki_cache_hit_rate()
+  # retrain_latency()
   anytime_predictions()
-  feature_eval_latency()
-  digits_train_fs()
+  # feature_eval_latency()
+  # digits_train_fs()
   
