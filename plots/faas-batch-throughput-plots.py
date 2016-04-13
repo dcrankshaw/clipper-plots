@@ -2,6 +2,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import shutil
 
 
 # fname = "/Users/crankshaw/model-serving/centipede-plots/results/faas_benchmarks/spark_10rf.txt"
@@ -167,6 +168,7 @@ def plot_batch_bar(ys, plot_fname, ylabel, ylim=None, p99=False):
     fig.set_size_inches(5.0, 4.0)
 
     plt.savefig(plot_fname)
+    shutil.copy(plot_fname, fig_dir)
 
 def plot_dynamic_batch(dynamic_fname, static_fname, plot_fname):
     dyn_results = parse_logs(os.path.join(results_path,dynamic_fname))
