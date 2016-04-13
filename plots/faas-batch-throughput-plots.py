@@ -5,9 +5,9 @@ import os
 
 
 # fname = "/Users/crankshaw/model-serving/centipede-plots/results/faas_benchmarks/spark_10rf.txt"
-results_path = "../results/faas_benchmarks"
-# fig_dir = os.getcwd()
-fig_dir = "/Users/crankshaw/Dropbox/Apps/ShareLaTeX/velox-centipede/osdi_2016/figs"
+results_path = "../results"
+fig_dir = os.getcwd()
+# fig_dir = "/Users/crankshaw/Dropbox/Apps/ShareLaTeX/velox-centipede/osdi_2016/figs"
 def parse_logs(fname):
 
     cur_batch = None
@@ -77,6 +77,7 @@ def parse_logs(fname):
 def plot_from_logs(filename, legend=False, ylim = 100):
     batch_size,  p99_lat,  p99_err,  avg_lat,  avg_err,  thrus,  thrus_err = parse_logs(results_path + "/" + filename + ".txt")
     fig, ax = plt.subplots()
+    # ax.set_xscale("log")
     ax.errorbar(batch_size, avg_lat, yerr=avg_err, fmt='o-', label="mean latency")
     ax.errorbar(batch_size, p99_lat, yerr=p99_err, fmt='^-', label="max latency")
     # ax.plot(batch_size, res['max_latency'], '^--', label="max latency")
@@ -101,6 +102,7 @@ def plot_from_logs(filename, legend=False, ylim = 100):
 def plot_from_json(filename, legend=False, ylim = 100):
     res = json.load(open('../results/'+filename+'.json','r'))
     fig, ax = plt.subplots()
+    # ax.set_xscale("log")
     batch_size = res['batch_size']
     ax.plot(batch_size, res['mean_latency'], 'o-', label="mean latency")
     ax.plot(batch_size, res['max_latency'], '^-', label="max latency")
@@ -121,9 +123,17 @@ def plot_from_json(filename, legend=False, ylim = 100):
     fig.savefig(fig_dir + "/" + filename+'.pdf',bbox_inches='tight')
     # plt.show()
 
-plot_from_logs('spark_10rf', ylim=100)
-plot_from_logs('spark_100rf', ylim=100)
-plot_from_logs('spark_lr', ylim=30)
-plot_from_logs('spark_svm', ylim=30)
-plot_from_json('tf_latency', legend=False, ylim=50)
-plot_from_json('sklearn_svm_local', legend=True, ylim=100)
+
+def plot_dynamic_batch(dynamic_fname, static_fname):
+    dyn_results = parse_logs(results_path + "/" + dynamic_fname + ".txt")
+    stat_results = parse_logs(results_path + "/" + static_fname + ".txt")
+    assert dyn_results[0] == 1
+    print dyn_results
+
+# plot_from_logs('spark_10rf', ylim=100)
+# plot_from_logs('spark_100rf', ylim=100)
+# plot_from_logs('spark_lr', ylim=30)
+# plot_from_logs('spark_svm', ylim=30)
+# plot_from_json('tf_latency', legend=False, ylim=50)
+# plot_from_json('sklearn_svm_local', legend=True, ylim=100)
+plot_dynamic_batch('sklearn_svm_dynamic_batch', 'sklearn_svm_local')
