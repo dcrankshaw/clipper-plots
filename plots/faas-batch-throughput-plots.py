@@ -141,14 +141,14 @@ def parse_from_json(filename):
     res = json.load(open(filename,'r'))
     return res
 
-def plot_batch_bar(ys, plot_fname, ylabel, ylim=None):
+def plot_batch_bar(ys, plot_fname, ylabel, ylim=None, p99=False):
     bar_color = 'steelblue'
     fig, ax = plt.subplots()
     ind = np.arange(3)
     h_width = 0.4
     rects1 = ax.bar(ind, ys, h_width*2, color=bar_color)
 
-    labels = ['dynamic', 'mean', 'max']
+    labels = ['dynamic', 'mean', 'p99']
     ax.set_ylabel(ylabel)
     ax.set_xticks(ind + h_width)
     ax.set_xticklabels(labels)
@@ -197,6 +197,7 @@ def plot_dynamic_batch(dynamic_fname, static_fname, plot_fname):
         max_lat = -1
         lat = 20
         # print stat_results[7]
+        # this is really p99 not max
         for (i,v) in enumerate(stat_results[1]):
             if v < lat and v > max_lat:
                 max_ind = i
@@ -251,7 +252,7 @@ def plot_dynamic_batch(dynamic_fname, static_fname, plot_fname):
 # plot_from_logs('spark_svm', ylim=30)
 # plot_from_json('tf_latency', legend=False, ylim=50)
 # plot_from_json('sklearn_svm_local', legend=True, ylim=100)
-plot_dynamic_batch('sklearn_svm_dynamic_batch.txt', 'sklearn_svm_local.json', 'sklearn_dynamic_batch')
+# plot_dynamic_batch('sklearn_svm_dynamic_batch.txt', 'sklearn_svm_local.json', 'sklearn_dynamic_batch')
 plot_dynamic_batch('spark_lr_dynamic_batch.txt', 'spark_lr.txt', 'spark_lr_dynamic_batch')
 plot_dynamic_batch('spark_10rf_dynamic_batch.txt', 'spark_10rf.txt', 'spark_10rf_dynamic_batch')
 
