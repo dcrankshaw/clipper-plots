@@ -91,6 +91,7 @@ def parse_logs(fname):
 
 def plot_from_logs(filename, legend=False, ylim = 100):
     batch_size,  p99_lat,  p99_err,  avg_lat,  avg_err,  thrus,  thrus_err, max_lat = parse_logs(results_path + "/" + filename + ".txt")
+    print np.min(thrus), np.max(thrus)
     fig, ax = plt.subplots()
     # ax.set_xscale("log")
     ax.errorbar(batch_size, avg_lat, yerr=avg_err, fmt='o-', label="mean latency")
@@ -102,6 +103,8 @@ def plot_from_logs(filename, legend=False, ylim = 100):
     ax2.errorbar(batch_size, thrus, yerr=thrus_err, fmt='ms-', label="throughput")
     ax2.set_ylabel('throughput(qps)')
     ax2.set_ylim((0, ax2.get_ylim()[1]*1.05))
+    ax.set_xlim((-5, ax.get_xlim()[1]*1.05))
+    ax2.set_xlim((-5, ax2.get_xlim()[1]*1.05))
 
     ax.set_ylim((0,ylim))
     ax.set_xlabel('batch size')
@@ -109,7 +112,7 @@ def plot_from_logs(filename, legend=False, ylim = 100):
     if legend:
         ax.legend(bbox_to_anchor=(1, 0.7),loc=5)
         ax2.legend(bbox_to_anchor=(1,0.54),loc=5, handlelength=3.2)
-    print filename+'.pdf'
+    print fig_dir + "/" + filename+'.pdf'
     fig.savefig(fig_dir + "/" + filename+'.pdf',bbox_inches='tight')
 
 
@@ -127,6 +130,8 @@ def plot_from_json(filename, legend=False, ylim = 100):
     ax2.plot(batch_size, res['throughput'],'s-', color='m', label="throughput")
     ax2.set_ylabel('throughput(qps)')
     ax2.set_ylim((0, ax2.get_ylim()[1]*1.05))
+    ax.set_xlim((-5, ax.get_xlim()[1]*1.05))
+    ax2.set_xlim((-5, ax2.get_xlim()[1]*1.05))
 
     ax.set_ylim((0,ylim))
     ax.set_xlabel('batch size')
@@ -165,7 +170,7 @@ def plot_batch_bar(ys, plot_fname, ylabel, ylim=None, p99=False):
                 ha='center', va='bottom')
 
     autolabel(rects1)
-    fig.set_size_inches(5.0, 4.0)
+    fig.set_size_inches(5.0, 2.5)
 
     plt.savefig(plot_fname)
     shutil.copy(plot_fname, fig_dir)
@@ -251,10 +256,11 @@ def plot_dynamic_batch(dynamic_fname, static_fname, plot_fname):
 # plot_from_logs('spark_10rf', ylim=100)
 # plot_from_logs('spark_100rf', ylim=100)
 # plot_from_logs('spark_lr', ylim=30)
-# plot_from_logs('spark_svm', ylim=30)
+plot_from_logs('spark_svm', ylim=30)
 # plot_from_json('tf_latency', legend=False, ylim=50)
 # plot_from_json('sklearn_svm_local', legend=True, ylim=100)
-# plot_dynamic_batch('sklearn_svm_dynamic_batch.txt', 'sklearn_svm_local.json', 'sklearn_dynamic_batch')
-plot_dynamic_batch('spark_lr_dynamic_batch.txt', 'spark_lr.txt', 'spark_lr_dynamic_batch')
-plot_dynamic_batch('spark_10rf_dynamic_batch.txt', 'spark_10rf.txt', 'spark_10rf_dynamic_batch')
 
+# plot_dynamic_batch('sklearn_svm_dynamic_batch.txt', 'sklearn_svm_local.json', 'sklearn_dynamic_batch')
+# plot_dynamic_batch('spark_lr_dynamic_batch.txt', 'spark_lr.txt', 'spark_lr_dynamic_batch')
+# plot_dynamic_batch('spark_10rf_dynamic_batch.txt', 'spark_10rf.txt', 'spark_10rf_dynamic_batch')
+#
