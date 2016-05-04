@@ -96,7 +96,7 @@ def retrain_latency():
 
   # autolabel(task_rects)
   # autolabel(all_rects)
-  fig.set_size_inches(6.0, 4.0)
+  fig.set_size_inches(6.0, 2.0)
 
   # ms = 6
   # ax.plot(points, np.array(data['w_train_times'])*1000.0, '%s-' % formats[0], markersize=ms, label='tasks')

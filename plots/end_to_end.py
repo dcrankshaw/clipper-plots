@@ -4,6 +4,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 import os, json
 
+fig_dir = os.getcwd()
+# fig_dir = "/Users/crankshaw/Dropbox/Apps/ShareLaTeX/velox-centipede/osdi_2016/figs"
+
 def analyze_run(t):
     accs = []
     thrus = []
@@ -35,6 +38,7 @@ colors = ["r", "b", "g"]
 markers = ["o", "v", "s"]
 i = 0
 for fname in os.listdir(path):
+    print fname
     runs = []
     with open(os.path.join(path,fname), "rb") as rf:
         cur_exp = None
@@ -63,18 +67,23 @@ for fname in os.listdir(path):
     label = fname[:-4]
     c = colors[i % len(colors)]
     m = markers[i % len(markers)]
-    ax_acc.errorbar(thrus_m[ts], acc_m[ts], yerr=acc_err[ts], fmt="%s%s-" % (c,m), label="%s" % label)
+    s = 100
+    ax_acc.errorbar(thrus_m[ts], acc_m[ts], yerr=acc_err[ts], fmt="%s%s-" % (c,m), ms=10, label="%s" % label)
+    print thrus_m[ts]
+    print acc_m[ts]
+
 
 
 #     ax_lat.errorbar(thrus_m[ts], mean_lats_m[ts], yerr=mean_lats_err[ts], fmt="%s%s-" % (c,m), label="%s" % label)
 #     ax_lat.errorbar(thrus_m[ts], p99_lats_m[ts], yerr=p99_lats_err[ts], fmt="%s%s--" % (c,m))
     if i is 2:
-        ax_lat.scatter(thrus_m[ts], p99_lats_m[ts], s=30, c="w", edgecolors=c, marker=m, label="p99")
-        ax_lat.scatter(thrus_m[ts], mean_lats_m[ts], s=30, c=c, marker=m, label="mean")
+        ax_lat.scatter(thrus_m[ts], p99_lats_m[ts], s=s, c="w", edgecolors=c, marker=m, label="p99")
+        ax_lat.scatter(thrus_m[ts], mean_lats_m[ts], s=s, c=c, marker=m, label="mean")
+
 
     else:
-        ax_lat.scatter(thrus_m[ts], mean_lats_m[ts], s=30, c=c, marker=m)
-        ax_lat.scatter(thrus_m[ts], p99_lats_m[ts], s=30, c="w", edgecolors=c, marker=m,)
+        ax_lat.scatter(thrus_m[ts], mean_lats_m[ts], s=s, c=c, marker=m)
+        ax_lat.scatter(thrus_m[ts], p99_lats_m[ts], s=s, c="w", edgecolors=c, marker=m,)
         
 
     
@@ -93,5 +102,5 @@ fig.set_size_inches((7,9))
 ax_acc.set_xticklabels(range(0, 16001, 2000), visible=True)
 ax_lat.set_xticklabels(range(0, 16001, 2000), visible=True)
 # ax_lat.set_xticklabels(ax_lat.get_xticklabels(), visible=True)
-plt.savefig("/Users/crankshaw/Dropbox/Apps/ShareLaTeX/velox-centipede/osdi_2016/figs/endtoendeval.pdf")
+plt.savefig("%s/endtoendeval.pdf" % fig_dir, bbox_inches='tight')
 # plt.show()
