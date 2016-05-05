@@ -153,11 +153,12 @@ def parse_from_json(filename):
 def plot_batch_bar(ys, plot_fname, ylabel=None, ylim=None, p99=False):
     bar_color = 'steelblue'
     fig, ax = plt.subplots()
-    ind = np.arange(2)
-    h_width = 0.4
-    rects1 = ax.bar(ind, ys[:-1], h_width*2, color=bar_color)
+    ind = np.arange(3) + 0.2
+    h_width = 0.35
+    # rects1 = ax.bar(ind, ys[:-1], h_width*2, color=bar_color)
+    rects1 = ax.bar(ind, ys, h_width*2, color=bar_color)
 
-    labels = ['adaptive', 'optimal']
+    labels = ['adaptive', 'optimal', 'no batch']
     if ylabel is not None:
         ax.set_ylabel(ylabel)
     ax.set_xticks(ind + h_width)
@@ -166,22 +167,22 @@ def plot_batch_bar(ys, plot_fname, ylabel=None, ylim=None, p99=False):
         ax.set_ylim((0, ylim))
     else:
         ylim = ax.get_ylim()[1]
-        ax.set_ylim((0, ylim*1.2))
+        ax.set_ylim((0, ylim*1.3))
 
     def autolabel(rects):
     # attach some text labels
         for rect in rects:
             height = rect.get_height()
             ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
-                '%.3f' % height,
+                '%.2f' % height,
                 ha='center', va='bottom')
 
     autolabel(rects1)
-    fig.set_size_inches(3.0, 1.5)
+    fig.set_size_inches(4.0, 1.5)
 
     print plot_fname
-    plt.savefig(plot_fname, bbox_inches='tight')
-    shutil.copy(plot_fname, fig_dir)
+    plt.savefig(fig_dir + "/" + plot_fname, bbox_inches='tight')
+    # shutil.copy(plot_fname, fig_dir)
 
 def plot_dynamic_batch(dynamic_fname, static_fname, plot_fname):
     dyn_results = parse_logs(os.path.join(results_path,dynamic_fname))
@@ -205,6 +206,7 @@ def plot_dynamic_batch(dynamic_fname, static_fname, plot_fname):
                 mean_ind = i
                 mean_lat = v
         mean_lat_threshhold_results = (res[u'mean_latency'][mean_ind], res[u'std'][mean_ind], res[u'throughput'][mean_ind])
+        min_lat_threshhold_results = (res[u'mean_latency'][0], res[u'std'][0], res[u'throughput'][0])
     elif static_fname[-3:] == 'txt':
         stat_results = parse_logs(os.path.join(results_path,static_fname))
         # print stat_results
@@ -226,14 +228,15 @@ def plot_dynamic_batch(dynamic_fname, static_fname, plot_fname):
                 mean_lat = v
         # mean_lat_threshhold_results = (res[u'mean_latency'][mean_ind], res[u'std'][mean_ind], res[u'throughput'][mean_ind])
         mean_lat_threshhold_results = (stat_results[3][mean_ind], 0.0, stat_results[5][mean_ind])
+        min_lat_threshhold_results = (stat_results[3][0], 0.0, stat_results[5][0])
         
 
     # return (batch_sizes,  p99_lat,  p99_err,  avg_lat,  avg_err,  thrus,  thrus_err, max_lat)
 
-    thru_ys = [dyn_results[5][0], mean_lat_threshhold_results[2],  max_lat_threshhold_results[2]]
+    thru_ys = [dyn_results[5][0], mean_lat_threshhold_results[2],  min_lat_threshhold_results[2]]
     # plot_batch_bar(thru_ys, "%s_thru.pdf" % plot_fname, "Throughput")
     plot_batch_bar(thru_ys, "%s_thru.pdf" % plot_fname)
-    lat_ys = [dyn_results[3][0], mean_lat_threshhold_results[0],  max_lat_threshhold_results[0]]
+    lat_ys = [dyn_results[3][0], mean_lat_threshhold_results[0],  min_lat_threshhold_results[0]]
     plot_batch_bar(lat_ys, "%s_lat.pdf" % plot_fname, ylim = 26)
 
     # bar_color = 'steelblue'
