@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import os, json
 
 fig_dir = os.getcwd()
+fig_dir = "/Users/crankshaw/ModelServingPaper/osdi_2016/figs"
 # fig_dir = "/Users/crankshaw/Dropbox/Apps/ShareLaTeX/velox-centipede/osdi_2016/figs"
 
 def analyze_run(t):
@@ -89,16 +90,15 @@ for fname in os.listdir(path):
     
     i += 1
 
-fig.set_size_inches(7,7)
 ax_acc.set_ylabel("test accuracy")
 ax_acc.set_ylim((0.48, 1.0))
-ax_acc.legend(loc=0)
+ax_acc.legend(loc=1, fontsize='small')
 ax_lat.set_ylabel("latency (ms)")
 ax_lat.set_xlabel("throughput (predictions/sec)")
-ax_lat.legend(loc=0)
-ax_lat.set_ylim((0, 40))
-fig.tight_layout
-fig.set_size_inches((7,9))
+ax_lat.legend(loc=4,fontsize='small')
+ax_lat.set_ylim((0, 32))
+# fig.tight_layout
+fig.set_size_inches((9,7))
 ax_acc.set_xticklabels(range(0, 16001, 2000), visible=True)
 ax_lat.set_xticklabels(range(0, 16001, 2000), visible=True)
 # ax_lat.set_xticklabels(ax_lat.get_xticklabels(), visible=True)

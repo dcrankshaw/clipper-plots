@@ -1,8 +1,12 @@
 
 import numpy as np
 import scipy
+import matplotlib
 import matplotlib.pyplot as plt
 import os, json
+
+matplotlib.rcParams['font.family'] = "Times New Roman"
+matplotlib.rcParams['font.size'] = 11
 
 # fig_dir = os.getcwd()
 fig_dir = "/Users/crankshaw/ModelServingPaper/osdi_2016/figs"
@@ -37,8 +41,8 @@ for u in results:
 dr_accs = np.array(dr_accs)
 gen_accs = np.array(gen_accs)
 learned_accs = np.array(learned_accs)
-cs = 10
-el = 2
+cs = 5
+el = 1
 
 learned_ys = np.mean(learned_accs, axis=0)
 num_train_examples = len(learned_accs)
@@ -46,13 +50,13 @@ se_div = np.sqrt(num_train_examples)
 print learned_ys
 learned_ys_errors = np.std(learned_accs, axis=0, ddof=1)
 fig, ax = plt.subplots()
-(_, caps1, _) = ax.errorbar(range(9), 1-learned_ys, yerr = learned_ys_errors/se_div, label="learned", capsize=cs, elinewidth=el)
+(_, caps1, _) = ax.errorbar(range(9), 1-learned_ys, yerr = learned_ys_errors/se_div, label="Clipper", capsize=cs, elinewidth=el)
 (_, caps2, _) = ax.errorbar(range(9), 1-np.ones(9)*np.mean(gen_accs), yerr=np.ones(9)*np.std(gen_accs, ddof=1)/se_div, label="gen", capsize=cs, elinewidth=el)
-(_, caps3, _) = ax.errorbar(range(9), 1-np.ones(9)*np.mean(dr_accs), yerr=np.ones(9)*np.std(dr_accs, ddof=1)/se_div, label="dr", capsize=cs, elinewidth=el)
+(_, caps3, _) = ax.errorbar(range(9), 1-np.ones(9)*np.mean(dr_accs), yerr=np.ones(9)*np.std(dr_accs, ddof=1)/se_div, label="dialect", capsize=cs, elinewidth=el)
 # ax.set_title("average error across users")
-ax.set_xlabel("training examples")
-ax.set_ylabel("phoneme error")
-cap_width = 2
+ax.set_xlabel("Updates")
+ax.set_ylabel("Error")
+cap_width = 1
 for cap in caps1:
     # cap.set_color('red')
     cap.set_markeredgewidth(cap_width)
@@ -64,11 +68,11 @@ for cap in caps3:
     cap.set_markeredgewidth(cap_width)
 
 # ax.set_ylim((0.275, 0.38))
-ax.set_ylim((0.25, 0.38))
+ax.set_ylim((0.26, 0.38))
 ax.set_xlim((0,8.2))
-ax.legend(loc=3)
+ax.legend(loc=3,ncol=2, fontsize='small')
 # sharelatex_path = os.path.expanduser("~/Dropbox/Apps/ShareLaTeX/velox-centipede/vldb_2016/figs")
 # git_path = os.path.expanduser("~/ModelServingPaper/vldb_2016/figs")
 
-fig.set_size_inches(4.6*1.2, 2.85*1.2)
+fig.set_size_inches(3.5, 2.2)
 plt.savefig(os.path.join(fig_dir, "timit_cold_start_err.pdf"), bbox_inches='tight')

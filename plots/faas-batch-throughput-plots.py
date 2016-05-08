@@ -1,4 +1,5 @@
 import json
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -9,6 +10,11 @@ import shutil
 results_path = "../results"
 # fig_dir = os.getcwd()
 fig_dir = "/Users/crankshaw/ModelServingPaper/osdi_2016/figs"
+matplotlib.rcParams['font.family'] = "Times New Roman"
+matplotlib.rcParams['font.size'] = 20
+nbins=4
+width=2.5
+height=2
 def parse_logs(fname):
 
     cur_batch = None
@@ -94,6 +100,7 @@ def plot_from_logs(filename, legend=False, ylim = 100):
     print np.min(thrus), np.max(thrus)
     print batch_size[4], avg_lat[4]
     fig, ax = plt.subplots()
+    plt.locator_params(nbins=nbins)
     # ax.set_xscale("log")
     ax.errorbar(batch_size, avg_lat, yerr=avg_err, fmt='o-', label="mean latency")
     ax.errorbar(batch_size, p99_lat, yerr=p99_err, fmt='^-', label="p99 latency")
@@ -101,6 +108,7 @@ def plot_from_logs(filename, legend=False, ylim = 100):
     ax.plot(batch_size, np.ones(len(batch_size))*20.0, "--", label='SLO')
     # ax.plot(batch_size, res['mean_latency'][0]*np.array(batch_size), label='linear scaling')
     ax2 = ax.twinx()
+    plt.locator_params(nbins=nbins)
     ax2.errorbar(batch_size, thrus, yerr=thrus_err, fmt='ms-', label="throughput")
     ax2.set_ylim((0, ax2.get_ylim()[1]*1.05))
     ax.set_xlim((-5, ax.get_xlim()[1]*1.05))
@@ -114,7 +122,7 @@ def plot_from_logs(filename, legend=False, ylim = 100):
         ax.legend(bbox_to_anchor=(1, 0.7),loc=5)
         ax2.legend(bbox_to_anchor=(1,0.54),loc=5, handlelength=3.2)
     print fig_dir + "/" + filename+'.pdf'
-    fig.set_size_inches(3.0, 2.5)
+    fig.set_size_inches(width, height)
     fig.savefig(fig_dir + "/" + filename+'.pdf',bbox_inches='tight')
 
 
@@ -122,6 +130,8 @@ def plot_from_logs(filename, legend=False, ylim = 100):
 def plot_from_json(filename, legend=False, ylim = 100):
     res = json.load(open('../results/'+filename+'.json','r'))
     fig, ax = plt.subplots()
+
+    plt.locator_params(nbins=nbins)
     # ax.set_xscale("log")
     batch_size = res['batch_size']
     ax.plot(batch_size, res['mean_latency'], 'o-', label="mean latency")
@@ -129,6 +139,7 @@ def plot_from_json(filename, legend=False, ylim = 100):
     ax.plot(batch_size, res['slo'], '--', label='SLO')
     # ax.plot(batch_size, res['mean_latency'][0]*np.array(batch_size), label='linear scaling')
     ax2 = ax.twinx()
+    plt.locator_params(nbins=nbins)
     ax2.plot(batch_size, res['throughput'],'s-', color='m', label="throughput")
     ax2.set_ylim((0, ax2.get_ylim()[1]*1.05))
     ax.set_xlim((-5, ax.get_xlim()[1]*1.05))
@@ -142,7 +153,7 @@ def plot_from_json(filename, legend=False, ylim = 100):
         ax.legend(bbox_to_anchor=(1, 0.66),loc=5)
         ax2.legend(bbox_to_anchor=(1,0.50),loc=5, handlelength=3.2)
     print filename+'.pdf'
-    fig.set_size_inches(4.0, 3.0)
+    fig.set_size_inches(width,height)
     fig.savefig(fig_dir + "/" + filename+'.pdf',bbox_inches='tight')
     # plt.show()
 
@@ -151,12 +162,22 @@ def parse_from_json(filename):
     return res
 
 def plot_batch_bar(ys, plot_fname, ylabel=None, ylim=None, p99=False):
-    bar_color = 'steelblue'
+
+    width=4
+    height=3.5
+    matplotlib.rcParams['font.size'] = 18
+    # bar_color = 'steelblue'
     fig, ax = plt.subplots()
+    plt.set_cmap('Greys')
+
+    plt.locator_params(nbins=nbins)
     ind = np.arange(3) + 0.2
     h_width = 0.35
     # rects1 = ax.bar(ind, ys[:-1], h_width*2, color=bar_color)
-    rects1 = ax.bar(ind, ys, h_width*2, color=bar_color)
+    rects1 = ax.bar(ind, ys, h_width*2)
+    colors = ['#333333', '#666666', '#999999']
+    for i in range(len(rects1)):
+        rects1[i].set_color(colors[i])
 
     labels = ['adaptive', 'optimal', 'no batch']
     if ylabel is not None:
@@ -178,7 +199,7 @@ def plot_batch_bar(ys, plot_fname, ylabel=None, ylim=None, p99=False):
                 ha='center', va='bottom')
 
     autolabel(rects1)
-    fig.set_size_inches(4.0, 1.5)
+    fig.set_size_inches(width,height)
 
     print plot_fname
     plt.savefig(fig_dir + "/" + plot_fname, bbox_inches='tight')
@@ -265,12 +286,12 @@ def plot_dynamic_batch(dynamic_fname, static_fname, plot_fname):
 
     # print dyn_results
 
-# plot_from_logs('spark_10rf', ylim=100)
-# plot_from_logs('spark_100rf', ylim=100)
-# plot_from_logs('spark_lr', ylim=30)
-# plot_from_logs('spark_svm', ylim=30)
-# plot_from_json('tf_latency', legend=False, ylim=50)
-# plot_from_json('sklearn_svm_local', legend=True, ylim=100)
+plot_from_logs('spark_10rf', ylim=100)
+plot_from_logs('spark_100rf', ylim=100)
+plot_from_logs('spark_lr', ylim=30)
+plot_from_logs('spark_svm', ylim=30)
+plot_from_json('tf_latency', legend=False, ylim=50)
+plot_from_json('sklearn_svm_local', legend=True, ylim=100)
 
 plot_dynamic_batch('sklearn_svm_dynamic_batch.txt', 'sklearn_svm_local.json', 'sklearn_dynamic_batch')
 plot_dynamic_batch('spark_lr_dynamic_batch.txt', 'spark_lr.txt', 'spark_lr_dynamic_batch')

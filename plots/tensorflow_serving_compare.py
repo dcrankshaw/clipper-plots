@@ -9,7 +9,8 @@ import shutil
 # fname = "/Users/crankshaw/model-serving/centipede-plots/results/faas_benchmarks/spark_10rf.txt"
 results_path = "../results"
 # fig_dir = os.getcwd()
-fig_dir = "/Users/crankshaw/Dropbox/Apps/ShareLaTeX/velox-centipede/osdi_2016/figs"
+# fig_dir = "/Users/crankshaw/Dropbox/Apps/ShareLaTeX/velox-centipede/osdi_2016/figs"
+fig_dir = "/Users/crankshaw/ModelServingPaper/osdi_2016/figs"
 def parse_clipper_logs(fname):
 
     cur_batch = 0
@@ -130,8 +131,8 @@ def plot():
   fig, ax = plt.subplots()
   ind = np.arange(2) + 0.05
 
-  h_width = 0.35
-  gap = 0.03
+  h_width = 0.30
+  gap = 0.1
   clipper_thrus = ax.bar(ind, (conv_clipper[2], softmax_clipper[2]),
                           h_width, color=clipper_color, label="Clipper")
 
@@ -153,19 +154,21 @@ def plot():
       for rect in rects:
           height = rect.get_height()
           ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
-              '%.3f' % height,
+              '%.1f' % height,
               ha='center', va='bottom')
 
   autolabel(clipper_thrus)
   autolabel(tf_thrus)
-  fig.set_size_inches(6.0, 4.0)
+  width = 6.0*0.6
+  height = 4.0*0.6
+  fig.set_size_inches(width, height)
 
   plot_fname = "tf_compare_thrus.pdf"
-  plt.savefig(plot_fname, bbox_inches='tight')
-  shutil.copy(plot_fname, fig_dir)
+  plt.savefig(fig_dir + "/" + plot_fname, bbox_inches='tight')
+  # shutil.copy(plot_fname, fig_dir)
 
   """
-    PLOT THROUGHPUT
+    PLOT LATENCY
   """
   clipper_color = 'steelblue'
   tf_color = 'darkred'
@@ -225,7 +228,7 @@ def plot():
           print type(rect)
           height = rect.get_height()
           ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
-              '%.3f' % height,
+              '%.2f' % height,
               ha='center', va='bottom')
 
   def autolabel_with_heights(rects, heights):
@@ -235,7 +238,7 @@ def plot():
           print type(rect)
           height = heights[i]
           ax.text(rect.get_x() + rect.get_width()/2., 1.03*height,
-              '%.3f' % height,
+              '%.2f' % height,
               ha='center', va='bottom')
           i += 1
 
@@ -243,10 +246,12 @@ def plot():
   autolabel_with_heights(clipper_mean_lats, clipper_p99s)
   # autolabel(tf_p99_lats)
   autolabel_with_heights(tf_mean_lats, tf_p99s)
-  fig.set_size_inches(6.0, 4.0)
+  # width = 6.0*0.8
+  # height = 4.0*0.8
+  fig.set_size_inches(width, height)
   plot_fname = "tf_compare_lats.pdf"
-  plt.savefig(plot_fname, bbox_inches='tight')
-  shutil.copy(plot_fname, fig_dir)
+  plt.savefig(fig_dir + "/" + plot_fname, bbox_inches='tight')
+  # shutil.copy(plot_fname, fig_dir)
 
 
 
