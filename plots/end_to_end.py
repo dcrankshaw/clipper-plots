@@ -7,7 +7,8 @@ import os, json
 fig_dir = os.getcwd()
 fig_dir = "/Users/crankshaw/ModelServingPaper/osdi_2016/figs"
 # fig_dir = "/Users/crankshaw/Dropbox/Apps/ShareLaTeX/velox-centipede/osdi_2016/figs"
-
+matplotlib.rcParams['font.family'] = "Times New Roman"
+matplotlib.rcParams['font.size'] = 20
 def analyze_run(t):
     accs = []
     thrus = []
@@ -31,7 +32,7 @@ def analyze_run(t):
     return acc_m, acc_err, thrus_m, thrus_err, mean_lats_m, mean_lats_err, p99_lats_m, p99_lats_err, max_lats_m, max_lats_err
 
 
-matplotlib.rcParams.update({'font.size': 14})
+# matplotlib.rcParams.update({'font.size': 14})
 path = os.path.abspath("../results/end_to_end_THRUPUT")
 # plt.figure(figsize=(5,8))
 fig, (ax_acc, ax_lat) = plt.subplots(nrows=2, ncols=1, sharex=True, sharey=False)
@@ -92,13 +93,13 @@ for fname in os.listdir(path):
 
 ax_acc.set_ylabel("test accuracy")
 ax_acc.set_ylim((0.48, 1.0))
-ax_acc.legend(loc=1, fontsize='small')
+ax_acc.legend(loc=1, fontsize='small', ncol=3)
 ax_lat.set_ylabel("latency (ms)")
 ax_lat.set_xlabel("throughput (predictions/sec)")
 ax_lat.legend(loc=4,fontsize='small')
 ax_lat.set_ylim((0, 32))
 # fig.tight_layout
-fig.set_size_inches((9,7))
+fig.set_size_inches((9,6))
 ax_acc.set_xticklabels(range(0, 16001, 2000), visible=True)
 ax_lat.set_xticklabels(range(0, 16001, 2000), visible=True)
 # ax_lat.set_xticklabels(ax_lat.get_xticklabels(), visible=True)

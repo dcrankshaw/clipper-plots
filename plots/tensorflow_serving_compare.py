@@ -11,6 +11,9 @@ results_path = "../results"
 # fig_dir = os.getcwd()
 # fig_dir = "/Users/crankshaw/Dropbox/Apps/ShareLaTeX/velox-centipede/osdi_2016/figs"
 fig_dir = "/Users/crankshaw/ModelServingPaper/osdi_2016/figs"
+matplotlib.rcParams['font.family'] = "Times New Roman"
+matplotlib.rcParams['font.size'] = 18
+nbins=5
 def parse_clipper_logs(fname):
 
     cur_batch = 0
@@ -114,7 +117,7 @@ def parse_tfserve_log(fname):
 def plot():
   # print parse_clipper_logs("../results/tensorflow_compare/convnet_b32_slo10.txt")
   # print parse_tfserve_log("../results/tensorflow_compare/tf_serve_convnet_b32_results_35.txt") 
-  matplotlib.rcParams.update({'font.size': 12})
+  # matplotlib.rcParams.update({'font.size': 12})
   print "ConvNet"
   conv_clipper = parse_clipper_logs("../results/tensorflow_compare/convnet_b32_slo10.txt")
   conv_tf = parse_tfserve_log("../results/tensorflow_compare/tf_serve_convnet_b32_results_35.txt")
@@ -127,8 +130,10 @@ def plot():
     PLOT THROUGHPUT
   """
   clipper_color = 'steelblue'
-  tf_color = 'darkred'
+  # tf_color = 'darkred'
+  tf_color = 'maroon'
   fig, ax = plt.subplots()
+  plt.locator_params(nbins=nbins)
   ind = np.arange(2) + 0.05
 
   h_width = 0.30
@@ -144,8 +149,10 @@ def plot():
   ax.set_xticks(ind + h_width + (gap/2.0))
   ax.set_xticklabels(labels)
   # ax.legend(loc=0)
-  ax.legend(loc=0, fontsize=11)
-  ylim = 15000
+  ax.legend(loc=2, fontsize=14,bbox_to_anchor=(-.03, 1.05))
+  ax.xaxis.set_ticks_position('bottom')
+  ax.yaxis.set_ticks_position('left')
+  ylim = 15500
   if ylim is not None:
       ax.set_ylim((0, ylim))
 
@@ -154,12 +161,12 @@ def plot():
       for rect in rects:
           height = rect.get_height()
           ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
-              '%.1f' % height,
+              '%.0f' % height,
               ha='center', va='bottom')
 
   autolabel(clipper_thrus)
   autolabel(tf_thrus)
-  width = 6.0*0.6
+  width = 7.0*0.6
   height = 4.0*0.6
   fig.set_size_inches(width, height)
 
@@ -170,9 +177,11 @@ def plot():
   """
     PLOT LATENCY
   """
-  clipper_color = 'steelblue'
-  tf_color = 'darkred'
+  # clipper_color = 'steelblue'
+  # tf_color = 'darkred'
   fig, ax = plt.subplots()
+
+  plt.locator_params(nbins=nbins)
   clipper_lats = np.array((conv_clipper[0], softmax_clipper[0]))
   clipper_p99s = np.array((conv_clipper[1], softmax_clipper[1]))
   clipper_lat_errs = ((0,0), clipper_p99s - clipper_lats)
@@ -217,15 +226,15 @@ def plot():
   ax.set_ylabel('Latency (ms)')
   ax.set_xticks(ind + h_width + (gap/2.0))
   ax.set_xticklabels(labels)
-  ax.legend(loc=0, fontsize=10)
-  ylim = None
+  # ax.legend(loc=2, fontsize=13)
+  ylim = 63
   if ylim is not None:
       ax.set_ylim((0, ylim))
 
   def autolabel(rects):
   # attach some text labels
       for rect in rects:
-          print type(rect)
+          # print type(rect)
           height = rect.get_height()
           ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
               '%.2f' % height,
@@ -235,7 +244,7 @@ def plot():
   # attach some text labels
       i = 0
       for rect in rects:
-          print type(rect)
+          # print type(rect)
           height = heights[i]
           ax.text(rect.get_x() + rect.get_width()/2., 1.03*height,
               '%.2f' % height,
