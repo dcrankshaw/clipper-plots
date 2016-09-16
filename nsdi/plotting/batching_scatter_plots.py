@@ -47,7 +47,6 @@ def find_backtrack_points(batches, lats, k=False):
                     bt_batches.append(batches[i])
                     bt_lats.append(lats[i])
                     idx.append(i)
-    print(idx)
     return (bt_batches, bt_lats)
 
 def process_batch(results, name, ax, title=None):
@@ -69,8 +68,8 @@ def process_batch(results, name, ax, title=None):
     colors=sns.color_palette("cubehelix", 5)
     bt_batches, bt_lats = find_backtrack_points(batches, latencies, name=="kernel_svm")
     lw=1
-    ax.scatter(batches, latencies, color=colors[0], s=7, label="Samples")
-    ax.scatter(bt_batches, bt_lats, color=colors[3], s=25, label="AIMD Decrease")
+    ax.scatter(batches, latencies, color=colors[0], s=4, label="Samples")
+    ax.scatter(bt_batches, bt_lats, color=colors[3], s=20, label="AIMD Decrease")
     get_y = lambda a, b: a + b * x
     for i in range(models.shape[0]):
         y = get_y(models.a[i], models.b[i])
@@ -96,7 +95,7 @@ if __name__=="__main__":
                 res = json.loads(splits[1].strip())
                 results[res["name"]] = res
 
-    fig, axs = plt.subplots(nrows=2, ncols=3, figsize=(8, 3))
+    fig, axs = plt.subplots(nrows=2, ncols=3, figsize=(8, 2))
     axs = axs.flatten()
     for (i,n) in enumerate(results.keys()):
         ax = axs[i]
@@ -111,7 +110,7 @@ if __name__=="__main__":
                 # backgroundcolor="white"
                 )
 
-    legend = axs[1].legend(frameon=True, bbox_to_anchor=(-1.2, 1.02, 3.4, .102), loc=3,
+    legend = axs[1].legend(frameon=True, bbox_to_anchor=(-1.21, 1.05, 3.5, .102), loc=3,
             ncol=4, mode="expand", borderaxespad=0.1, fontsize=8,)
 
 
@@ -121,7 +120,7 @@ if __name__=="__main__":
     axs[3].set_xlabel("Batch Size")
     axs[4].set_xlabel("Batch Size")
     axs[5].set_xlabel("Batch Size")
-    fig.subplots_adjust(hspace=0.2)
+    fig.subplots_adjust(hspace=0.3)
 
     fname = "%s/batching_scatterplots.pdf" % (fig_dir)
     plt.savefig(fname, bbox_inches='tight')
