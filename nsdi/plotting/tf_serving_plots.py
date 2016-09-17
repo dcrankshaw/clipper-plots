@@ -18,8 +18,8 @@ results_dir = os.path.abspath("../results/tf_serving_comparison")
 
 name_map = {
         "tf_serving": "TensorFlow Serving",
-        "cpp_rpc": "Clipper C++ MW",
-        "python": "Clipper Python MW",
+        "cpp_rpc": "Clipper TF-C++",
+        "python": "Clipper TF-Python",
         }
 
 # def plot_thrus(results, figsize, colors):
