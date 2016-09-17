@@ -63,6 +63,8 @@ def process_batch(results, name, ax, title=None):
     models = [fit_model(cur_q) for cur_q in quantiles]
     models = pd.DataFrame(models, columns=['q', 'a', 'b','lb','ub']) 
     x_max_lim = np.max(batches)*1.2
+    if x_max_lim > 10:
+        x_max_lim = 1600
     x = np.arange(0, x_max_lim, 1)
     # colors = sns.cubehelix_palette(4, start=2.8, rot=-0.1)
     colors=sns.color_palette("cubehelix", 5)
@@ -73,10 +75,16 @@ def process_batch(results, name, ax, title=None):
     get_y = lambda a, b: a + b * x
     for i in range(models.shape[0]):
         y = get_y(models.a[i], models.b[i])
-        ax.plot(x, y, linestyle='-', color=colors[1], linewidth=lw, label="P%d Regression Line" % int(models.q[i]*100))
+        max_idx = len(y)
+        if x_max_lim > 10:
+            for iii in range(len(y)):
+                if y[iii] >= 29000:
+                    max_idx = iii
+                    break
+        ax.plot(x[:max_idx], y[:max_idx], linestyle='-', color=colors[1], linewidth=lw, label="P%d Regression Line" % int(models.q[i]*100))
     ax.plot([0, x_max_lim], np.ones(2)*20000, color=colors[2], linestyle="dashed", linewidth=lw, label = "SLO")
     ax.set_xlim((0, x_max_lim))
-    ax.set_ylim((0, max(np.max(latencies)*1.3, 26000)))   
+    ax.set_ylim((0, max(np.max(latencies)*1.3, 35000)))   
 
 
 if __name__=="__main__":

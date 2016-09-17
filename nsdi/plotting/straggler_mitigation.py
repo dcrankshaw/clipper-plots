@@ -38,18 +38,18 @@ def extract_results(i, df, fname):
     with open(os.path.join(log_loc, fname), "r") as f:
         ensemble_size = int(fname.split("_")[2])
         res = json.load(f)
-        clipper_p99 = [m["p99"] for m in res["histograms"] if "prediction_latency" in m["name"]][0]
-        blocking_p99 = [m["p99"] for m in res["histograms"] if "straggler_blocking_prediction_latency" in m["name"]][0]
-        clipper_mean = [m["mean"] for m in res["histograms"] if "prediction_latency" in m["name"]][0]
-        blocking_mean = [m["mean"] for m in res["histograms"] if "straggler_blocking_prediction_latency" in m["name"]][0]
+        clipper_p99 = [m["p99"] for m in res["histograms"] if "prediction_latency" in m["name"]][0] / 1000.0
+        blocking_p99 = [m["p99"] for m in res["histograms"] if "straggler_blocking_prediction_latency" in m["name"]][0] / 1000.0
+        clipper_mean = [m["mean"] for m in res["histograms"] if "prediction_latency" in m["name"]][0] / 1000.0
+        blocking_mean = [m["mean"] for m in res["histograms"] if "straggler_blocking_prediction_latency" in m["name"]][0] / 1000.0
         in_time_mean = 100 - ([m["mean"] for m in res["histograms"] if "in_time_predictions" in m["name"]][0] / float(ensemble_size) * 100)
         in_time_p99 = 100 - ([m["p99"] for m in res["histograms"] if "in_time_predictions" in m["name"]][0] / float(ensemble_size) * 100)
         if ensemble_size < 18:
             df.loc[i] = [ensemble_size, clipper_mean, clipper_p99, blocking_mean, blocking_p99, in_time_mean, in_time_p99]
 
 
-def plot_line(cur_col, ax, label, color, ls="-"):
-    cur_col.plot(y="mean", yerr="std", ax=ax, color=color, ls=ls, label=label)
+def plot_line(cur_col, ax, label, color, marker, ls="-"):
+    cur_col.plot(y="mean", yerr="std", ax=ax, marker=marker, color=color, ls=ls, label=label)
 
 def plot_straggler_mitigation():
     results_files = utils.get_results_files(log_loc)
@@ -68,16 +68,17 @@ def plot_straggler_mitigation():
     # print tgs.index.values
     # print tgs["clipper_p99","mean"].values
     tgs.columns.get_level_values(0)
-    fig, (ax_lat, ax_in_time) = plt.subplots(nrows=2, sharex=True, figsize=(4,3.2))
-    plot_line(tgs["clipper_p99"], ax_lat, "No Stragglers P99", colors[0])
-    plot_line(tgs["clipper_mean_lat"], ax_lat, "No Stragglers Mean", colors[0], ls="--")
-    plot_line(tgs["blocking_p99"], ax_lat, "Stragglers P99", colors[1])
-    plot_line(tgs["blocking_mean_lat"], ax_lat, "Stragglers Mean", colors[1], ls="--")
-    plot_line(tgs["in_time_mean"], ax_in_time, "P99", colors[2])
-    plot_line(tgs["in_time_p99"], ax_in_time, "Mean", colors[2], ls="--")
+    fig, (ax_lat, ax_in_time) = plt.subplots(nrows=2, sharex=False, figsize=(4,3), gridspec_kw = {'height_ratios':[2, 1.5]})
+    plot_line(tgs["clipper_p99"], ax_lat, "No Stragglers P99", colors[0], "o")
+    plot_line(tgs["clipper_mean_lat"], ax_lat, "No Stragglers Mean", colors[0], "o", ls="--")
+    plot_line(tgs["blocking_p99"], ax_lat, "Stragglers P99", colors[1], "v")
+    plot_line(tgs["blocking_mean_lat"], ax_lat, "Stragglers Mean", colors[1], "v", ls="--")
+    plot_line(tgs["in_time_mean"], ax_in_time, "P99", colors[2], None)
+    plot_line(tgs["in_time_p99"], ax_in_time, "Mean", colors[2], None, ls="--")
+    print(tgs["blocking_mean_lat"]["mean"])
     ax_lat.legend(loc=0, ncol=2)
-    ax_lat.set_ylim(0, 300000)
-    ax_lat.set_ylabel("Latency ($\mu$s)")
+    ax_lat.set_ylim(0, 300)
+    ax_lat.set_ylabel("Latency (ms)")
     ax_in_time.set_ylabel("% Ensemble Missing")
     ax_in_time.set_xlabel("Size of ensemble")
     ax_in_time.set_ylim(0, 100)
