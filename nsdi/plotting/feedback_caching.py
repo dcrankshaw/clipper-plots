@@ -43,23 +43,24 @@ extracted_results.sort()
 cache_state, windows, hit_rate, cache_on_thrus = zip(*extracted_results[:3])
 cache_state, windows, hit_rate, cache_off_thrus = zip(*extracted_results[3:])
 colors = sns.cubehelix_palette(2, start=2.8, rot=-0.1)
-fig, ax = plt.subplots(figsize=(5,2.5))
+fig, ax = plt.subplots(figsize=(5,2.))
 sns.despine()
 width = 1
+space = 0.5
 def autolabel(rects):
     for rect in rects:
         height = rect.get_height()
         ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
                 '%d' % int(height),
                 ha='center', va='bottom')
-r1 = ax.bar(np.arange(len(cache_off_thrus))*width*3,  cache_on_thrus, width=width, color=colors[0], label="caching")
-r2 = ax.bar(np.arange(len(cache_off_thrus))*width*3 + 1,  cache_off_thrus, width=width, color=colors[1], label="no caching")
+r1 = ax.bar(np.arange(len(cache_off_thrus))*width*2.5,  cache_on_thrus, width=width, color=colors[0], label="caching")
+r2 = ax.bar(np.arange(len(cache_off_thrus))*width*2.5 + 1,  cache_off_thrus, width=width, color=colors[1], label="no caching")
 autolabel(r1)
 autolabel(r2)
 
-plt.xticks(np.arange(len(cache_off_thrus))*width*3 + 1, windows)
+plt.xticks(np.arange(len(cache_off_thrus))*width*2.5 + 1, ["Window=%d" % w for w in windows])
 ax.legend(loc=0)
-ax.set_xlabel("Update Window Size")
+# ax.set_xlabel("Update Window Size")
 ax.set_ylabel("Update Throughput")
 fname = "%s/caching_for_feedback_thruput.pdf" % (fig_dir)
 plt.savefig(fname, bbox_inches='tight')

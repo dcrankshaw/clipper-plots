@@ -9,8 +9,8 @@ import pandas as pd
 import sys
 import seaborn as sns
 import utils
-sns.set_style("whitegrid")
-sns.set_context("paper", font_scale=1.3,)
+sns.set_style("white")
+sns.set_context("paper", font_scale=1.0,)
 
 """
 NOTES:
@@ -62,7 +62,7 @@ def plot_gpu_scaling():
     slow_net_num_reps, slow_net_agg_thrus, slow_net_mean_thrus = one_gbps_results
 
     colors = sns.color_palette("bright", n_colors=4, desat=.5)
-    fig, (ax_thru, ax_lat) = plt.subplots(nrows=2, sharex=True, figsize=(4,4))
+    fig, (ax_thru, ax_lat) = plt.subplots(nrows=2, sharex=True, figsize=(4,3))
     ax_thru.plot(num_reps, agg_thrus, color=colors[0], label="Agg 10Gbps")
     ax_thru.scatter(num_reps, agg_thrus, color=colors[0])
     ax_thru.plot(slow_net_num_reps, slow_net_agg_thrus, color=colors[2], label="Agg 1Gbps")

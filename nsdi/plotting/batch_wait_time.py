@@ -8,7 +8,7 @@ import sys
 import seaborn as sns
 import utils
 sns.set_style("darkgrid")
-sns.set_context("paper", font_scale=1.3,)
+sns.set_context("paper", font_scale=1.0,)
 
 """
 NOTES: Both models are linear SVMs, one trained in Spark,
@@ -52,30 +52,31 @@ def plot_wait_times():
     sklearn_df.sort_values("wait_time", inplace=True)
     colors = sns.color_palette("bright", n_colors=8, desat=.5)
 
-    fig, (ax_thru, ax_lat, ax_batch) = plt.subplots(nrows=3,figsize=(5,6), sharex=True)
+    fig, (ax_thru, ax_lat, ax_batch) = plt.subplots(nrows=3,figsize=(2.5,3), sharex=True)
 
-    ax_thru.plot(spark_df["wait_time"], spark_df["model_thruput"], label="Spark SVM", color=colors[0])
-    ax_thru.plot(sklearn_df["wait_time"], sklearn_df["model_thruput"], label="Scikit-Learn SVM", color=colors[1])
+    ax_thru.plot(spark_df["wait_time"], spark_df["model_thruput"], marker="o", ms=4.5,  label="Spark SVM", color=colors[0])
+    ax_thru.plot(sklearn_df["wait_time"], sklearn_df["model_thruput"], marker="^", ms=4.5, label="Scikit-Learn SVM", color=colors[1])
     ax_thru.set_ylabel("Throughput")
     ax_thru.legend(loc=0)
     ax_thru.set_xlim(0, 4000)
     ax_thru.set_ylim(0, 20000)
-    ax_thru.locator_params(nbins=5, axis="y")
+    ax_thru.locator_params(nbins=4, axis="y")
 
-    ax_lat.plot(spark_df["wait_time"], spark_df["model_latency"], label="Spark SVM", color=colors[0])
-    ax_lat.plot(sklearn_df["wait_time"], sklearn_df["model_latency"], label="Scikit-Learn SVM", color=colors[1])
-    ax_lat.set_ylabel("Mean Latency ($\mu$s)")
+    ax_lat.plot(spark_df["wait_time"], spark_df["model_latency"], marker="o", ms=4.5, label="Spark SVM", color=colors[0])
+    ax_lat.plot(sklearn_df["wait_time"], sklearn_df["model_latency"], marker="^", ms=4.5, label="Scikit-Learn SVM", color=colors[1])
+    ax_lat.set_ylabel("Mean Latency\n($\mu$s)")
     ax_lat.set_xlim(0, 4000)
     ax_lat.set_ylim(0, 4000)
-    ax_lat.locator_params(nbins=5, axis="y")
+    ax_lat.locator_params(nbins=4, axis="y")
 
-    ax_batch.plot(spark_df["wait_time"], spark_df["model_batch_size"], label="Spark SVM", color=colors[0])
-    ax_batch.plot(sklearn_df["wait_time"], sklearn_df["model_batch_size"], label="Scikit-Learn SVM", color=colors[1])
-    ax_batch.set_ylabel("Mean Batch Size")
+    ax_batch.plot(spark_df["wait_time"], spark_df["model_batch_size"], marker="o", ms=4.5, label="Spark SVM", color=colors[0])
+    ax_batch.plot(sklearn_df["wait_time"], sklearn_df["model_batch_size"], marker="^", ms=4.5, label="Scikit-Learn SVM", color=colors[1])
+    ax_batch.set_ylabel("Mean\nBatch Size")
     ax_batch.set_xlabel("Batch Wait Timeout ($\mu$s)")
     ax_batch.set_xlim(0, 4000)
     ax_batch.set_ylim(0, 100)
     ax_batch.locator_params(nbins=5, axis="y")
+    ax_batch.locator_params(nbins=4, axis="x")
     fname = "%s/batch_timeouts.pdf" % (fig_dir)
     plt.savefig(fname, bbox_inches='tight')
     print(fname)
