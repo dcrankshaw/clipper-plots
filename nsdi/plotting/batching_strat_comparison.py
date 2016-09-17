@@ -10,7 +10,7 @@ import statsmodels.formula.api as smf
 import utils
 
 sns.set_style("darkgrid")
-sns.set_context("paper", font_scale=0.9,)
+sns.set_context("paper", font_scale=0.8,)
 
 # sns.set_palette("Paired")
 # sns.set_style("whitegrid", {"axes.grid": "False"})
@@ -57,9 +57,9 @@ def plot_thrus(ax, results, figsize, colors):
         model_names = [name_map[m] for m in model_names]
         cur_rect = ax.bar(np.arange(len(rates))*width*(num_bars+ space) + width*offset, rates, color=colors[offset], width=width, label=strat)
         if strat == "Adaptive":
-            utils.barchart_label(ax, cur_rect, 6, hmult=1.1, rot=10)
+            utils.barchart_label(ax, cur_rect, 6, hmult=1.1, rot=15)
         else:
-            utils.barchart_label(ax, cur_rect, 6, rot=10)
+            utils.barchart_label(ax, cur_rect, 6, rot=15)
         if offset == 0:
             ax.set_xticks(np.arange(len(rates))*width*(num_bars + space) + width*(num_bars/2.0))
             ax.set_xticklabels(model_names, rotation=0, ha="center")
@@ -85,12 +85,12 @@ def plot_latencies(ax, results, figsize, colors):
         model_names = [name_map[m] for m in model_names]
         cur_rect = ax.bar(np.arange(len(lats))*width*(num_bars+ space) + width*offset, lats, color=colors[offset], width=width, label=strat)
         if strat == "Adaptive":
-            utils.barchart_label(ax, cur_rect, 6, hmult=1.15, rot=10)
+            utils.barchart_label(ax, cur_rect, 6, hmult=1.20, rot=15)
         else:
-            utils.barchart_label(ax, cur_rect, 6, rot=10)
+            utils.barchart_label(ax, cur_rect, 6, rot=15)
         if offset == 0:
-            ax.set_xticks(np.arange(len(lats))*width*(num_bars + space) + width*(num_bars/2.0))
-            ax.set_xticklabels(model_names, rotation=0, ha="center")
+            ax.set_xticks(np.arange(len(lats))*width*(num_bars + space) + width*(num_bars/2.0) - 1.3)
+            ax.set_xticklabels(model_names, rotation=25, ha="center")
         offset += 1
     ax.set_ylim(0, 40000)
     ax.set_xlim(-0.3, ax.get_xlim()[1])
@@ -116,7 +116,7 @@ def plot_batch_sizes(ax, results, figsize, colors):
         model_names = [name_map[m] for m in model_names]
         cur_rect = ax.bar(np.arange(len(bs))*width*(num_bars+ space) + width*offset, bs, color=colors[offset], width=width, label=strat)
         if strat == "Adaptive":
-            utils.barchart_label(ax, cur_rect, 6, hmult=1.10, rot=12)
+            utils.barchart_label(ax, cur_rect, 6, hmult=1.20, rot=12)
         else:
             utils.barchart_label(ax, cur_rect, 6, rot=12)
         if offset == 0:
@@ -135,7 +135,7 @@ def plot_batch_sizes(ax, results, figsize, colors):
 
 if __name__=='__main__':
     results = load_results()
-    figsize = (5.2,2.5)
+    figsize = (4.0,2.0)
     fig, (ax_thru, ax_lat) = plt.subplots(nrows=2, figsize=figsize, sharex=True)
     colors = sns.color_palette("Set1", n_colors=8, desat=.5)
     plot_thrus(ax_thru, results, figsize, colors)
