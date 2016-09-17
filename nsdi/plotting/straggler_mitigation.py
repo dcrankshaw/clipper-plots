@@ -7,7 +7,7 @@ import sys
 import seaborn as sns
 import utils
 sns.set_style("white")
-sns.set_context("paper", font_scale=1.8,)
+sns.set_context("paper", font_scale=1.0,)
 
 """
     NOTES:
@@ -42,8 +42,10 @@ def extract_results(i, df, fname):
         blocking_p99 = [m["p99"] for m in res["histograms"] if "straggler_blocking_prediction_latency" in m["name"]][0]
         clipper_mean = [m["mean"] for m in res["histograms"] if "prediction_latency" in m["name"]][0]
         blocking_mean = [m["mean"] for m in res["histograms"] if "straggler_blocking_prediction_latency" in m["name"]][0]
+        in_time_mean = 100 - ([m["mean"] for m in res["histograms"] if "in_time_predictions" in m["name"]][0] / float(ensemble_size) * 100)
+        in_time_p99 = 100 - ([m["p99"] for m in res["histograms"] if "in_time_predictions" in m["name"]][0] / float(ensemble_size) * 100)
         if ensemble_size < 18:
-            df.loc[i] = [ensemble_size, clipper_mean, clipper_p99, blocking_mean, blocking_p99]
+            df.loc[i] = [ensemble_size, clipper_mean, clipper_p99, blocking_mean, blocking_p99, in_time_mean, in_time_p99]
 
 
 def plot_line(cur_col, ax, label, color, ls="-"):
@@ -51,24 +53,34 @@ def plot_line(cur_col, ax, label, color, ls="-"):
 
 def plot_straggler_mitigation():
     results_files = utils.get_results_files(log_loc)
-    df = pd.DataFrame(columns=("ensemble_size", "clipper_mean_lat", "clipper_p99", "blocking_mean_lat", "blocking_p99"))
+    df = pd.DataFrame(columns=("ensemble_size", "clipper_mean_lat", "clipper_p99", "blocking_mean_lat", "blocking_p99", "in_time_mean", "in_time_p99"))
     for (i,r) in enumerate(results_files):
         extract_results(i, df, r)
     df.sort_values("ensemble_size", inplace=True)
-    f = {'clipper_mean_lat':['mean','std'], 'clipper_p99':['mean','std'], 'blocking_mean_lat':['mean','std'], 'blocking_p99':['mean','std'],}
+    f = {'clipper_mean_lat':['mean','std'],
+         'clipper_p99':['mean','std'],
+         'blocking_mean_lat':['mean','std'],
+         'blocking_p99':['mean','std'],
+         'in_time_mean':['mean','std'],
+         'in_time_p99':['mean','std'],
+         }
     tgs = df.groupby("ensemble_size").agg(f)
     # print tgs.index.values
     # print tgs["clipper_p99","mean"].values
     tgs.columns.get_level_values(0)
-    fig, ax = plt.subplots()
-    plot_line(tgs["clipper_p99"], ax, "Clipper P99", colors[0])
-    plot_line(tgs["clipper_mean_lat"], ax, "Clipper Mean", colors[0], ls="--")
-    plot_line(tgs["blocking_p99"], ax, "Blocking P99", colors[1])
-    plot_line(tgs["blocking_mean_lat"], ax, "Blocking Mean", colors[1], ls="--")
-    ax.legend(loc=0, ncol=2)
-    ax.set_ylim(0, 250000)
-    ax.set_ylabel("Latency ($\mu$s)")
-    ax.set_xlabel("Size of ensemble")
+    fig, (ax_lat, ax_in_time) = plt.subplots(nrows=2, sharex=True, figsize=(4,3.2))
+    plot_line(tgs["clipper_p99"], ax_lat, "No Stragglers P99", colors[0])
+    plot_line(tgs["clipper_mean_lat"], ax_lat, "No Stragglers Mean", colors[0], ls="--")
+    plot_line(tgs["blocking_p99"], ax_lat, "Stragglers P99", colors[1])
+    plot_line(tgs["blocking_mean_lat"], ax_lat, "Stragglers Mean", colors[1], ls="--")
+    plot_line(tgs["in_time_mean"], ax_in_time, "P99", colors[2])
+    plot_line(tgs["in_time_p99"], ax_in_time, "Mean", colors[2], ls="--")
+    ax_lat.legend(loc=0, ncol=2)
+    ax_lat.set_ylim(0, 300000)
+    ax_lat.set_ylabel("Latency ($\mu$s)")
+    ax_in_time.set_ylabel("% Ensemble Missing")
+    ax_in_time.set_xlabel("Size of ensemble")
+    ax_in_time.set_ylim(0, 100)
     fname = "%s/straggler_mitigation.pdf" % (fig_dir)
     plt.savefig(fname, bbox_inches='tight')
     print(fname)
