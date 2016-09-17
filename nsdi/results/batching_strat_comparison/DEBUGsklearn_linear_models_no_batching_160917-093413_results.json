@@ -1,0 +1,227 @@
+{
+  "name": "DEBUGsklearn_linear_models_no_batching_160917-093413",
+  "counters": [
+    {
+      "name": "prediction_counter",
+      "count": 2387937
+    },
+    {
+      "name": "queued_predictions",
+      "count": 2612063
+    },
+    {
+      "name": "update_counter",
+      "count": 0
+    },
+    {
+      "name": "queued_updates",
+      "count": 0
+    },
+    {
+      "name": "linear_svm:prediction_counter",
+      "count": 52123
+    },
+    {
+      "name": "logistic_reg:prediction_counter",
+      "count": 52128
+    },
+    {
+      "name": "linear_svm:172.21.0.4:6001:prediction_counter",
+      "count": 52123
+    },
+    {
+      "name": "logistic_reg:172.21.0.5:6001:prediction_counter",
+      "count": 52128
+    },
+    {
+      "name": "pred_ones_counter",
+      "count": 6
+    },
+    {
+      "name": "pred_zeros_counter",
+      "count": 2387927
+    }
+  ],
+  "ratio_counters": [
+    {
+      "name": "prediction accuracy ratio",
+      "ratio": null
+    },
+    {
+      "name": "cache_hits",
+      "ratio": 0.0
+    },
+    {
+      "name": "update_cache_hits",
+      "ratio": null
+    },
+    {
+      "name": "digits accuracy ratio",
+      "ratio": 0.5000002093861092
+    }
+  ],
+  "histograms": [
+    {
+      "name": "prediction_latency",
+      "min": 18108,
+      "max": 14199620,
+      "mean": 7020582.973005837,
+      "std": 4079275.034421053,
+      "p95": 13390519.95,
+      "p99": 14011832.06,
+      "p50": 6932821.5
+    },
+    {
+      "name": "straggler_blocking_prediction_latency",
+      "min": 18943,
+      "max": 11049378,
+      "mean": 5575920.51927286,
+      "std": 3157777.4107451059,
+      "p95": 10508467.299999999,
+      "p99": 10936700.58,
+      "p50": 5563360.5
+    },
+    {
+      "name": "in_time_predictions",
+      "min": 0,
+      "max": 0,
+      "mean": 0.0,
+      "std": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "p50": 0.0
+    },
+    {
+      "name": "update_latency",
+      "min": 0,
+      "max": 0,
+      "mean": 0.0,
+      "std": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "p50": 0.0
+    },
+    {
+      "name": "linear_svm:model_latency",
+      "min": 145,
+      "max": 1846,
+      "mean": 203.60031614785994,
+      "std": 43.288228856480937,
+      "p95": 261.0,
+      "p99": 341.75,
+      "p50": 199.0
+    },
+    {
+      "name": "linear_svm:model_batch_size",
+      "min": 1,
+      "max": 1,
+      "mean": 1.0,
+      "std": 0.0,
+      "p95": 1.0,
+      "p99": 1.0,
+      "p50": 1.0
+    },
+    {
+      "name": "logistic_reg:model_latency",
+      "min": 147,
+      "max": 12507,
+      "mean": 205.19990272373543,
+      "std": 140.8705268457895,
+      "p95": 263.0,
+      "p99": 348.5,
+      "p50": 200.0
+    },
+    {
+      "name": "logistic_reg:model_batch_size",
+      "min": 1,
+      "max": 1,
+      "mean": 1.0,
+      "std": 0.0,
+      "p95": 1.0,
+      "p99": 1.0,
+      "p50": 1.0
+    },
+    {
+      "name": "linear_svm:172.21.0.4:6001:model_latency",
+      "min": 145,
+      "max": 1846,
+      "mean": 203.9895428015564,
+      "std": 43.97677891651665,
+      "p95": 261.0,
+      "p99": 345.5,
+      "p50": 200.0
+    },
+    {
+      "name": "linear_svm:172.21.0.4:6001:model_batch_size",
+      "min": 1,
+      "max": 1,
+      "mean": 1.0,
+      "std": 0.0,
+      "p95": 1.0,
+      "p99": 1.0,
+      "p50": 1.0
+    },
+    {
+      "name": "logistic_reg:172.21.0.5:6001:model_latency",
+      "min": 147,
+      "max": 998,
+      "mean": 203.50133754863814,
+      "std": 38.62411743248674,
+      "p95": 262.0,
+      "p99": 346.0,
+      "p50": 199.0
+    },
+    {
+      "name": "logistic_reg:172.21.0.5:6001:model_batch_size",
+      "min": 1,
+      "max": 1,
+      "mean": 1.0,
+      "std": 0.0,
+      "p95": 1.0,
+      "p99": 1.0,
+      "p50": 1.0
+    }
+  ],
+  "meters": [
+    {
+      "name": "prediction_thruput",
+      "rate": 88014.91398686722,
+      "unit": "events per second"
+    },
+    {
+      "name": "update_thruput",
+      "rate": 0.0,
+      "unit": "events per second"
+    },
+    {
+      "name": "linear_svm:model_thruput",
+      "rate": 1920.8534525500959,
+      "unit": "events per second"
+    },
+    {
+      "name": "logistic_reg:model_thruput",
+      "rate": 1921.0377141479078,
+      "unit": "events per second"
+    },
+    {
+      "name": "linear_svm:172.21.0.4:6001:model_thruput",
+      "rate": 1920.8534525500959,
+      "unit": "events per second"
+    },
+    {
+      "name": "logistic_reg:172.21.0.5:6001:model_thruput",
+      "rate": 1921.0377141479078,
+      "unit": "events per second"
+    },
+    {
+      "name": "linear_svm:cache_included_thruput",
+      "rate": 0.7743956478079569,
+      "unit": "events per second"
+    },
+    {
+      "name": "logistic_reg:cache_included_thruput",
+      "rate": 0.03687601042573317,
+      "unit": "events per second"
+    }
+  ]
+}

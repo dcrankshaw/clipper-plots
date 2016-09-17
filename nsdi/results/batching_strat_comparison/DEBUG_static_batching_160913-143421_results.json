@@ -162,12 +162,12 @@
     {
       "name": "linear_svm:model_latency",
       "min": 145,
-      "max": 1340,
-      "mean": 200.09727626459145,
-      "std": 41.90157473289621,
-      "p95": 247.0,
-      "p99": 282.0,
-      "p50": 211.0
+      "max": 1846,
+      "mean": 203.60031614785994,
+      "std": 43.288228856480937,
+      "p95": 261.0,
+      "p99": 341.75,
+      "p50": 199.0
     },
     {
       "name": "linear_svm:model_batch_size",
@@ -201,13 +201,13 @@
     },
     {
       "name": "logistic_reg:model_latency",
-      "min": 148,
-      "max": 2077,
-      "mean": 194.17874513618677,
-      "std": 42.4538625385534,
-      "p95": 240.0,
-      "p99": 283.0,
-      "p50": 187.5
+      "min": 147,
+      "max": 12507,
+      "mean": 205.19990272373543,
+      "std": 140.8705268457895,
+      "p95": 263.0,
+      "p99": 348.5,
+      "p50": 200.0
     },
     {
       "name": "logistic_reg:model_batch_size",
@@ -248,7 +248,7 @@
     },
     {
       "name": "linear_svm:model_thruput",
-      "rate": 353.09095278150758,
+      "rate": 1920.8534525500959,
       "unit": "events per second"
     },
     {
@@ -258,7 +258,7 @@
     },
     {
       "name": "logistic_reg:model_thruput",
-      "rate": 353.11127456296267,
+      "rate": 1921.0377141479078,
       "unit": "events per second"
     },
     {

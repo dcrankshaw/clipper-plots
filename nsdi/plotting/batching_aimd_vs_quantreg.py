@@ -44,8 +44,8 @@ def load_results():
             results[strat] = json.load(f)
     return results
 
-def plot_thrus(results, figsize, colors):
-    fig, ax = plt.subplots(figsize=figsize)
+def plot_thrus(ax, results, figsize, colors):
+    # fig, ax = plt.subplots(figsize=figsize)
     sns.despine()
     width = 1.0
     space = 0.7
@@ -70,12 +70,9 @@ def plot_thrus(results, figsize, colors):
 
     ax.legend(frameon=True, bbox_to_anchor=(0.0, 1.02, 1.0, .102), loc=3,
                 ncol=3, mode="expand", borderaxespad=0.05, fontsize=7,)
-    fname = "%s/batching_strategy_comp_thru.pdf" % (fig_dir)
-    plt.savefig(fname, bbox_inches='tight')
-    print(fname)
 
-def plot_latencies(results, figsize, colors):
-    fig, ax = plt.subplots(figsize=figsize)
+def plot_latencies(ax, results, figsize, colors):
+    # fig, ax = plt.subplots(figsize=figsize)
     sns.despine()
     width = 1
     space = 0.7
@@ -97,16 +94,16 @@ def plot_latencies(results, figsize, colors):
         offset += 1
     ax.set_ylim(0, 40000)
     ax.set_xlim(-0.3, ax.get_xlim()[1])
-    ax.legend(frameon=True, bbox_to_anchor=(0.0, 1.02, 1.0, .102), loc=3,
-                ncol=3, mode="expand", borderaxespad=0.05, fontsize=7,)
-
     ax.set_ylabel("P99 Latency ($\mu$s)")
-    fname = "%s/batching_strategy_comp_lat.pdf" % (fig_dir)
-    plt.savefig(fname, bbox_inches='tight')
-    print(fname)
+    # ax.legend(frameon=True, bbox_to_anchor=(0.0, 1.02, 1.0, .102), loc=3,
+    #             ncol=3, mode="expand", borderaxespad=0.05, fontsize=7,)
+    #
+    # fname = "%s/batching_strategy_comp_lat.pdf" % (fig_dir)
+    # plt.savefig(fname, bbox_inches='tight')
+    # print(fname)
 
-def plot_batch_sizes(results, figsize, colors):
-    fig, ax = plt.subplots(figsize=figsize)
+def plot_batch_sizes(ax, results, figsize, colors):
+    # fig, ax = plt.subplots(figsize=figsize)
     sns.despine()
     width = 1
     space = 0.7
@@ -128,22 +125,27 @@ def plot_batch_sizes(results, figsize, colors):
         offset += 1
     ax.set_ylim(0, 1800)
     ax.set_xlim(-0.3, ax.get_xlim()[1])
-    ax.legend(frameon=True, bbox_to_anchor=(0.0, 1.02, 1.0, .102), loc=3,
-                ncol=3, mode="expand", borderaxespad=0.05, fontsize=7,)
-
     ax.set_ylabel("Batch Size")
-    fname = "%s/batching_strategy_comp_batch_size.pdf" % (fig_dir)
-    plt.savefig(fname, bbox_inches='tight')
-    print(fname)
+    # ax.legend(frameon=True, bbox_to_anchor=(0.0, 1.02, 1.0, .102), loc=3,
+    #             ncol=3, mode="expand", borderaxespad=0.05, fontsize=7,)
+    #
+    # fname = "%s/batching_strategy_comp_batch_size.pdf" % (fig_dir)
+    # plt.savefig(fname, bbox_inches='tight')
+    # print(fname)
 
 if __name__=='__main__':
     results = load_results()
-    figsize = (5.2,1)
+    figsize = (5.2,2.5)
+    fig, (ax_thru, ax_lat) = plt.subplots(nrows=2, figsize=figsize, sharex=True)
     colors = sns.color_palette("Set1", n_colors=8, desat=.5)
-    plot_thrus(results, figsize, colors)
-    plot_latencies(results, figsize, colors)
-    plot_batch_sizes(results, figsize, colors)
+    plot_thrus(ax_thru, results, figsize, colors)
+    plot_latencies(ax_lat, results, figsize, colors)
+    # plot_batch_sizes(ax_batch, results, figsize, colors)
+    fig.subplots_adjust(hspace=0.3)
 
 
+    fname = "%s/batching_strategy_comp_all.pdf" % (fig_dir)
+    plt.savefig(fname, bbox_inches='tight')
+    print(fname)
 
 
