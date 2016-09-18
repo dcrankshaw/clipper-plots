@@ -50,6 +50,7 @@ def plot_wait_times():
         sklearn_df.loc[i] = extract_results(r)
     spark_df.sort_values("wait_time", inplace=True)
     sklearn_df.sort_values("wait_time", inplace=True)
+    print(sklearn_df["model_thruput"])
     colors = sns.color_palette("bright", n_colors=8, desat=.5)
 
     fig, (ax_thru, ax_lat, ax_batch) = plt.subplots(nrows=3,figsize=(2.5,3), sharex=True)
