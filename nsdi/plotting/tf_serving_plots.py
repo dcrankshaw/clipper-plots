@@ -82,7 +82,7 @@ def plot_thrus_latency(figsize, colors):
 
         ax_thru.locator_params(nbins=4, axis="y")
         ax_lat.locator_params(nbins=4, axis="y")
-    legend = ax[0][0].legend(frameon=True, bbox_to_anchor=(-0.4, 1.2, 2.83, .102), loc=3,
+    legend = ax[0][0].legend(frameon=True, bbox_to_anchor=(-0.4, 1.3, 2.83, .102), loc=3,
                 ncol=3, mode="expand", borderaxespad=0.1, fontsize=8,)
     plt.subplots_adjust(wspace=0.42, hspace=0.30, bottom=0.04, left=0.18, right=0.94, top=0.88)
     fname = "%s/tf_serving_latency_thruput.pdf" % (fig_dir)
