@@ -74,14 +74,17 @@ def plot_thrus_latency(figsize, colors):
                                   yerr=[(0,), (err,)], ecolor='k', capsize=5)
             utils.barchart_label(ax_lat, cur_rect, 6, hmult=1.12)
         ax_thru.get_xaxis().set_visible(False)
-        ax_thru.set_ylabel("Throughput (qps)")
+        ax_thru.set_ylabel("Throughput")
+        ax_lat.set_ylabel("Mean Lat.\n(ms)")
         ax_thru.set_ylim(0, yranges[m][0])
         ax_lat.get_xaxis().set_visible(False)
-        ax_lat.set_ylabel("Mean Latency (ms)")
         ax_lat.set_ylim(0, yranges[m][1])
+
+        ax_thru.locator_params(nbins=4, axis="y")
+        ax_lat.locator_params(nbins=4, axis="y")
     legend = ax[0][0].legend(frameon=True, bbox_to_anchor=(-0.4, 1.2, 2.83, .102), loc=3,
                 ncol=3, mode="expand", borderaxespad=0.1, fontsize=8,)
-    plt.subplots_adjust(wspace=0.42, hspace=0.22, bottom=0.04, left=0.18, right=0.94, top=0.88)
+    plt.subplots_adjust(wspace=0.42, hspace=0.30, bottom=0.04, left=0.18, right=0.94, top=0.88)
     # plt.show()
     fname = "%s/tf_serving_latency_thruput.pdf" % (fig_dir)
     plt.savefig(fname, bbox_inches='tight')
@@ -183,8 +186,8 @@ def plot_latencies(figsize, colors):
 
 if __name__=='__main__':
     # figsize = (5.2,1)
-    figsize = (4.5,6)
-    colors = sns.color_palette("cubehelix", n_colors=8)
+    figsize = (4.5,3)
+    colors = sns.color_palette("cubehelix", n_colors=3)
     plot_thrus_latency(figsize, colors)
     # plot_thrus(results, figsize, colors)
     # plot_thrus(figsize, colors)
