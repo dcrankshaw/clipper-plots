@@ -32,7 +32,8 @@ sns.set_context("paper", font_scale=1.0,)
 fig_dir = utils.NSDI_FIG_DIR
 
 log_loc = os.path.abspath("../results/straggler_mitigation")
-colors = sns.color_palette("Set1", n_colors=8, desat=.5)
+# colors = sns.color_palette("Set1", n_colors=8, desat=.5)
+colors = sns.cubehelix_palette(4, start=0.5, rot=-0.75, dark=0.2, light=0.75)
 
 def extract_results(i, df, fname):
     with open(os.path.join(log_loc, fname), "r") as f:

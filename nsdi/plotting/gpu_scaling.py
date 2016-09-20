@@ -61,19 +61,20 @@ def plot_gpu_scaling():
     num_reps, agg_thrus, mean_thrus, mean_lats, p99_lats = zip(*[extract_results(r,  "conv") for r in results])
     slow_net_num_reps, slow_net_agg_thrus, slow_net_mean_thrus = one_gbps_results
 
-    colors = sns.color_palette("bright", n_colors=4, desat=.5)
+    # colors = sns.color_palette("bright", n_colors=4, desat=.5)
+    colors = sns.cubehelix_palette(4, start=0.5, rot=-0.75, dark=0.1, light=0.6)
     fig, (ax_thru, ax_lat) = plt.subplots(nrows=2, sharex=True, figsize=(4,3))
-    ax_thru.plot(num_reps, agg_thrus, color=colors[0], label="Agg 10Gbps")
-    ax_thru.scatter(num_reps, agg_thrus, color=colors[0])
-    ax_thru.plot(slow_net_num_reps, slow_net_agg_thrus, color=colors[2], label="Agg 1Gbps")
-    ax_thru.scatter(slow_net_num_reps, slow_net_agg_thrus, color=colors[2])
+    ax_thru.plot(num_reps, agg_thrus, color=colors[0], marker="o", label="Agg 10Gbps")
+    ax_thru.scatter(num_reps, agg_thrus, color=colors[0], marker="o")
+    ax_thru.plot(slow_net_num_reps, slow_net_agg_thrus, color=colors[2], marker="d", label="Agg 1Gbps")
+    ax_thru.scatter(slow_net_num_reps, slow_net_agg_thrus, color=colors[2], marker="d")
     ax_thru.plot(num_reps, mean_thrus, color=colors[0], linestyle="dashed", label="Mean 10Gbps")
-    ax_thru.plot(slow_net_num_reps, slow_net_mean_thrus, color=colors[2], linestyle="dashed", label="Mean 1Gbps")
+    ax_thru.plot(slow_net_num_reps, slow_net_mean_thrus, color=colors[2], linestyle="dashdot", label="Mean 1Gbps")
 
     ax_lat.plot(num_reps, np.array(mean_lats) / 1000.0, color=colors[0], linestyle="dashed", label="Mean 10Gbps")
-    ax_lat.plot(num_reps, np.array(p99_lats)  / 1000.0, color=colors[0], label="P99 10Gbps")
-    ax_lat.plot(num_reps, np.array(one_gbps_mean_lats) / 1000.0, color=colors[2], linestyle="dashed", label="Mean 1Gbps")
-    ax_lat.plot(num_reps, np.array(one_gbps_p99_lats) / 1000.0 , color=colors[2], label="P99 1Gbps")
+    ax_lat.plot(num_reps, np.array(p99_lats)  / 1000.0, color=colors[0], marker="o", label="P99 10Gbps")
+    ax_lat.plot(num_reps, np.array(one_gbps_mean_lats) / 1000.0, color=colors[2], linestyle="dashdot", label="Mean 1Gbps")
+    ax_lat.plot(num_reps, np.array(one_gbps_p99_lats) / 1000.0 , color=colors[2], marker="d", label="P99 1Gbps")
 
 
 

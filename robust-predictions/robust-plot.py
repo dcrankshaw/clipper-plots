@@ -4,7 +4,8 @@ import seaborn as sns
 #sns.set_style("white")
 sns.set_context("paper", font_scale=1.0)
 
-color = sns.color_palette('bright', n_colors=4, desat=.5)
+# color = sns.color_palette('bright', n_colors=4, desat=.5)
+color = sns.cubehelix_palette(4, start=.75, rot=-.75)
 
 fig, (ax_cifar, ax_imgnet) = plt.subplots(nrows=2, sharex=False, figsize=(5,6), gridspec_kw = {'height_ratios':[2, 2]})
 
