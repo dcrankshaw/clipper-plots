@@ -48,7 +48,7 @@ def plot_thrus_latency(figsize, colors):
     yranges = {
         "MNIST": [28000, 70.0],
         "CIFAR-10": [7000, 70.0],
-        "ImageNet": [70, 750.0]
+        "ImageNet": [70, 850.0]
         }
     titles = ["a) MNIST", "b) CIFAR-10", "c) ImageNet"]
     for row, big_ax in enumerate(big_axes, start=1):
@@ -72,7 +72,7 @@ def plot_thrus_latency(figsize, colors):
             cur_rect = ax_lat.bar(width*offset, cur_lat[system] / 1000.0,
                                   color=colors[offset], width=width, label=name_map[system],
                                   yerr=[(0,), (err,)], ecolor='k', capsize=5)
-            utils.barchart_label(ax_lat, cur_rect, 6, hmult=0.90)
+            utils.barchart_label(ax_lat, cur_rect, 6, hmult=1.12)
         ax_thru.get_xaxis().set_visible(False)
         ax_thru.set_ylabel("Throughput (qps)")
         ax_thru.set_ylim(0, yranges[m][0])
@@ -182,10 +182,9 @@ def plot_latencies(figsize, colors):
     print(fname)
 
 if __name__=='__main__':
-    # results = load_results()
     # figsize = (5.2,1)
     figsize = (4.5,6)
-    colors = sns.color_palette("Set1", n_colors=8, desat=.5)
+    colors = sns.color_palette("cubehelix", n_colors=8)
     plot_thrus_latency(figsize, colors)
     # plot_thrus(results, figsize, colors)
     # plot_thrus(figsize, colors)
