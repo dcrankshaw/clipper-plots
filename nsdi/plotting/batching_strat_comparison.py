@@ -138,7 +138,7 @@ if __name__=='__main__':
     figsize = (4.0,2.0)
     fig, (ax_thru, ax_lat) = plt.subplots(nrows=2, figsize=figsize, sharex=True)
     # colors = sns.color_palette("Set1", n_colors=8, desat=.5)
-    colors = sns.color_palette("cubehelix", n_colors=8)
+    colors = sns.color_palette("cubehelix", n_colors=3)
     plot_thrus(ax_thru, results, figsize, colors)
     plot_latencies(ax_lat, results, figsize, colors)
     # plot_batch_sizes(ax_batch, results, figsize, colors)
