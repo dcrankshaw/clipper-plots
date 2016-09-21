@@ -6,8 +6,7 @@ import sys
 import matplotlib as mpl
 
 # NSDI_FIG_DIR = "/Users/crankshaw/model-serving/clipper_paper/ModelServingPaper/nsdi_2017/fake-figs"
-# PAPER_ROOT_DIR = "/Users/crankshaw/model-serving/clipper_paper/ModelServingPaper"
-PAPER_ROOT_DIR = "/Users/giuliozhou/Research/RISE/ModelServingPaper"
+PAPER_ROOT_DIR = "/Users/crankshaw/model-serving/clipper_paper/ModelServingPaper"
 # NSDI_FIG_DIR = os.path.join(PAPER_ROOT_DIR, "nsdi_2017/figs2")
 NSDI_FIG_DIR = os.path.join(PAPER_ROOT_DIR, "nsdi_2017/figs2")
 

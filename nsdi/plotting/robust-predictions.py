@@ -1,6 +1,9 @@
+from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import utils
+import os
 #sns.set_style("white")
 sns.set_context("paper", font_scale=1.0)
 
@@ -109,6 +112,8 @@ for p in ax_cifar.patches:
         ax_cifar.annotate(str(float(p.get_height())), (p.get_x() * 0.995, p.get_height() * 1.15))
     cnt += 1
 fig.subplots_adjust(hspace=0.5)
-plt.savefig('robust-prediction-v2.pdf', bbox_inches='tight')
+fname = os.path.join(utils.NSDI_FIG_DIR, "robust-predictions.pdf")
+plt.savefig(fname, bbox_inches='tight')
+print(fname)
 
 
