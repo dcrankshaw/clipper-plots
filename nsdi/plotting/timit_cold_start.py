@@ -9,12 +9,13 @@ import seaborn as sns
 import utils
 
 sns.set_style("white")
-sns.set_context("paper", font_scale=1.0,)
+sns.set_context("paper", font_scale=0.8,)
 # matplotlib.rcParams['font.family'] = "Times New Roman"
 # matplotlib.rcParams['font.size'] = 13
 nbins=4
 
-colors = sns.xkcd_palette(["amber", "faded green", "dusty purple"])
+# colors = sns.xkcd_palette(["amber", "faded green", "dusty purple"])
+colors = sns.color_palette("deep", 3)
 # fig_dir = os.getcwd()
 # fig_dir = "/Users/crankshaw/ModelServingPaper/osdi_2016/figs"
 # fig_dir = "/Users/giuliozhou/Research/RISE/ModelServingPaper/nsdi_2017/figs"
@@ -56,10 +57,10 @@ learned_ys = np.mean(learned_accs, axis=0)
 num_train_examples = len(learned_accs)
 se_div = np.sqrt(num_train_examples)
 learned_ys_errors = np.std(learned_accs, axis=0, ddof=1)
-fig, ax = plt.subplots(figsize=(2.2,1.0))
-(l1, caps1, _) = ax.errorbar(range(9), 1-learned_ys, yerr = learned_ys_errors/se_div, color=colors[0],label="Clipper", capsize=cs, elinewidth=el)
-(l3, caps3, _) = ax.errorbar(range(9), 1-np.ones(9)*np.mean(dr_accs), yerr=np.ones(9)*np.std(dr_accs, ddof=1)/se_div, color=colors[2], label="dialect", capsize=cs, elinewidth=el)
-(l2, caps2, _) = ax.errorbar(range(9), 1-np.ones(9)*np.mean(gen_accs), yerr=np.ones(9)*np.std(gen_accs, ddof=1)/se_div, color=colors[1], label="gen", capsize=cs, elinewidth=el)
+fig, ax = plt.subplots(figsize=(3.2,1.0))
+(l3, caps3, _) = ax.errorbar(range(9), 1-np.ones(9)*np.mean(dr_accs), yerr=np.ones(9)*np.std(dr_accs, ddof=1)/se_div, color=colors[2], label="Static Dialect", capsize=cs, elinewidth=el)
+(l2, caps2, _) = ax.errorbar(range(9), 1-np.ones(9)*np.mean(gen_accs), yerr=np.ones(9)*np.std(gen_accs, ddof=1)/se_div, color=colors[1], label="No Dialect", capsize=cs, elinewidth=el)
+(l1, caps1, _) = ax.errorbar(range(9), 1-learned_ys, yerr = learned_ys_errors/se_div, color=colors[0],label="Clipper Selection Policy", capsize=cs, elinewidth=el)
 # ax.set_title("average error across users")
 
 dashes = [9, 3]  # 10 points on, 5 off, 100 on, 5 off
@@ -84,6 +85,7 @@ for cap in caps3:
 ax.set_ylim((0.21, 0.38))
 ax.set_xlim((0,8.2))
 ax.locator_params(tight=True, nbins=nbins)
+ax.locator_params(tight=True, nbins=6, axis="x")
 ax.legend(loc=3,ncol=2, fontsize='small', handlelength=2.4)
 # sharelatex_path = os.path.expanduser("~/Dropbox/Apps/ShareLaTeX/velox-centipede/vldb_2016/figs")
 # git_path = os.path.expanduser("~/ModelServingPaper/vldb_2016/figs")

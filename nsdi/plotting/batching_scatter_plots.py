@@ -118,7 +118,7 @@ if __name__=="__main__":
                 # backgroundcolor="white"
                 )
 
-    legend = axs[1].legend(frameon=True, bbox_to_anchor=(-1.21, 1.05, 3.5, .102), loc=3,
+    legend = axs[1].legend(frameon=True, bbox_to_anchor=(-1.21, 1.05, 3.42, .102), loc=3,
             ncol=4, mode="expand", borderaxespad=0.1, fontsize=8,)
 
 
