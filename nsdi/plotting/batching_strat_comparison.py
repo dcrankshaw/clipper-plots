@@ -57,9 +57,9 @@ def plot_thrus(ax, results, figsize, colors):
         model_names = [name_map[m] for m in model_names]
         cur_rect = ax.bar(np.arange(len(rates))*width*(num_bars+ space) + width*offset, rates, color=colors[offset], width=width, label=strat)
         if strat == "Adaptive":
-            utils.barchart_label(ax, cur_rect, 7, rot=40)
+            utils.barchart_label(ax, cur_rect, 7, rot=40, ha="left")
         else:
-            utils.barchart_label(ax, cur_rect, 7, rot=40)
+            utils.barchart_label(ax, cur_rect, 7, rot=40, ha="left")
         if offset == 0:
             ax.set_xticks(np.arange(len(rates))*width*(num_bars + space) + width*(num_bars/2.0))
             ax.set_xticklabels(model_names, rotation=0, ha="center")
@@ -86,9 +86,9 @@ def plot_latencies(ax, results, figsize, colors):
         model_names = [name_map[m] for m in model_names]
         cur_rect = ax.bar(np.arange(len(lats))*width*(num_bars+ space) + width*offset, lats, color=colors[offset], width=width, label=strat)
         if strat == "Adaptive":
-            utils.barchart_label(ax, cur_rect, 7, rot=40)
+            utils.barchart_label(ax, cur_rect, 7, rot=40, ha="left")
         else:
-            utils.barchart_label(ax, cur_rect, 7, rot=40)
+            utils.barchart_label(ax, cur_rect, 7, rot=40, ha="left")
         if offset == 0:
             ax.set_xticks(np.arange(len(lats))*width*(num_bars + space) + width*(num_bars/2.0) - 1.3)
             ax.set_xticklabels(model_names, rotation=30, ha="center")

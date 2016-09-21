@@ -27,15 +27,15 @@ def get_results_files(results_dir):
             results_files.append(name)
     return results_files
 
-def barchart_label(ax, rects, size=None, hmult=1.05, rot=0):
+def barchart_label(ax, rects, size=None, hmult=1.05, rot=0, ha='center'):
     for rect in rects:
         height = rect.get_height()
         if size is not None:
             ax.text(rect.get_x() + rect.get_width()/2., hmult*height,
                     '%d' % int(height), size=size,
-                    ha='left', va='bottom',rotation=rot)
+                    ha=ha, va='bottom',rotation=rot)
         else:
             ax.text(rect.get_x() + rect.get_width()/2., hmult*height,
                     '%d' % int(height),
-                    ha='left', va='bottom',rotation=rot)
+                    ha=ha, va='bottom',rotation=rot)
 

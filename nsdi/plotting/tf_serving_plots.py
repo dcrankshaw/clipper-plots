@@ -70,8 +70,9 @@ def plot_thrus_latency(figsize, colors):
                                    color=colors[offset], width=width, label=name_map[system])
             utils.barchart_label(ax_thru, cur_rect, 6)
             cur_rect = ax_lat.bar(width*offset, cur_lat[system] / 1000.0,
-                                  color=colors[offset], width=width, label=name_map[system],
-                                  yerr=[(0,), (err,)], ecolor='k', capsize=5)
+                                  color=colors[offset], width=width, label=name_map[system])
+            ax_lat.errorbar(width*offset + (width / 2), cur_lat[system] / 1000.0,
+                            yerr=[(0,), (err,)], ecolor='r', capthick=0.3, elinewidth=0.3)
             utils.barchart_label(ax_lat, cur_rect, 6, hmult=1.12)
         ax_thru.get_xaxis().set_visible(False)
         ax_thru.set_ylabel("Throughput")
