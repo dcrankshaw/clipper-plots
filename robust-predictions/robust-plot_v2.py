@@ -49,7 +49,7 @@ second_legend = ax_imgnet.legend(handles=[rects2,rects3], loc=1, fontsize=9)
 
 ind = np.array([0.3,1,1.7,2.4])
 ax_imgnet.set_xticks(ind)
-ax_imgnet.set_xticklabels(['single model', 'ensemble', '4-overlap', '5-overlap'])
+ax_imgnet.set_xticklabels(['single model', 'ensemble', '4-agree', '5-agree'])
 ax_imgnet.tick_params(axis='both', which='major', labelsize=10)
 ax_imgnet.tick_params(axis='both', which='minor', labelsize=10)
 
