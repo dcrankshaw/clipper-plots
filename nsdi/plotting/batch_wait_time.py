@@ -7,7 +7,7 @@ import pandas as pd
 import sys
 import seaborn as sns
 import utils
-sns.set_style("darkgrid")
+sns.set_style("white")
 sns.set_context("paper", font_scale=1.0,)
 
 """
@@ -51,10 +51,11 @@ def plot_wait_times():
     spark_df.sort_values("wait_time", inplace=True)
     sklearn_df.sort_values("wait_time", inplace=True)
     print(sklearn_df["model_thruput"])
-    colors = sns.color_palette("bright", n_colors=8, desat=.5)
+    colors = sns.color_palette("deep", n_colors=4)
+    colors[1] = colors[2]
 
     # fig, (ax_thru, ax_lat, ax_batch) = plt.subplots(nrows=3,figsize=(2.5,3), sharex=True)
-    fig, (ax_thru, ax_lat, ax_batch) = plt.subplots(nrows=3,figsize=(2.7,1.5), sharex=True)
+    fig, (ax_thru, ax_lat, ax_batch) = plt.subplots(nrows=3,figsize=(2.7,1.7), sharex=True)
 
     ax_thru.plot(spark_df["wait_time"], spark_df["model_thruput"], marker="o", ms=4.5,  label="Spark SVM", color=colors[0])
     ax_thru.plot(sklearn_df["wait_time"], sklearn_df["model_thruput"], marker="^", ms=4.5, label="Scikit-Learn SVM", color=colors[1])
@@ -80,6 +81,7 @@ def plot_wait_times():
     ax_batch.locator_params(nbins=3, axis="y")
     ax_batch.locator_params(nbins=4, axis="x")
     fname = "%s/batch_timeouts.pdf" % (fig_dir)
+    fig.subplots_adjust(hspace=0.25)
     # fig.subplots_adjust(hspace=0.5)
     plt.savefig(fname, bbox_inches='tight')
     print(fname)
