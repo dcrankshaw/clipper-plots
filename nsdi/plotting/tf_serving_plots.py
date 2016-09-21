@@ -92,5 +92,6 @@ def plot_thrus_latency(figsize, colors):
 
 if __name__=='__main__':
     figsize = (4.5,3)
-    colors = sns.color_palette("cubehelix", n_colors=3)
+    colors = sns.cubehelix_palette(3, start=.75, rot=-.75)
+    # colors = sns.color_palette("cubehelix", n_colors=3)
     plot_thrus_latency(figsize, colors)

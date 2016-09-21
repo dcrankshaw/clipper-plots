@@ -4,13 +4,18 @@ import scipy
 import matplotlib
 import matplotlib.pyplot as plt
 import os, json
+import seaborn as sns
 
-matplotlib.rcParams['font.family'] = "Times New Roman"
-matplotlib.rcParams['font.size'] = 13
+sns.set_style("white")
+sns.set_context("paper", font_scale=1.0,)
+# matplotlib.rcParams['font.family'] = "Times New Roman"
+# matplotlib.rcParams['font.size'] = 13
 nbins=4
 
+colors = sns.cubehelix_palette(3, start=.75, rot=-.75)
 # fig_dir = os.getcwd()
-fig_dir = "/Users/crankshaw/ModelServingPaper/osdi_2016/figs"
+# fig_dir = "/Users/crankshaw/ModelServingPaper/osdi_2016/figs"
+fig_dir = "/Users/giuliozhou/Research/RISE/ModelServingPaper/nsdi_2017/figs"
 results = []
 for i in range(1,9,2):
     fn = os.path.abspath("../results/timit/timit_user_eval_%d_to_%d.json" % (i, i + 1))
@@ -51,9 +56,9 @@ se_div = np.sqrt(num_train_examples)
 print learned_ys
 learned_ys_errors = np.std(learned_accs, axis=0, ddof=1)
 fig, ax = plt.subplots()
-(l1, caps1, _) = ax.errorbar(range(9), 1-learned_ys, yerr = learned_ys_errors/se_div, color='steelblue',label="Clipper", capsize=cs, elinewidth=el)
-(l2, caps2, _) = ax.errorbar(range(9), 1-np.ones(9)*np.mean(gen_accs), yerr=np.ones(9)*np.std(gen_accs, ddof=1)/se_div, color='maroon', label="gen", capsize=cs, elinewidth=el)
-(l3, caps3, _) = ax.errorbar(range(9), 1-np.ones(9)*np.mean(dr_accs), yerr=np.ones(9)*np.std(dr_accs, ddof=1)/se_div, color='green', label="dialect", capsize=cs, elinewidth=el)
+(l1, caps1, _) = ax.errorbar(range(9), 1-learned_ys, yerr = learned_ys_errors/se_div, color=colors[0],label="Clipper", capsize=cs, elinewidth=el)
+(l2, caps2, _) = ax.errorbar(range(9), 1-np.ones(9)*np.mean(gen_accs), yerr=np.ones(9)*np.std(gen_accs, ddof=1)/se_div, color=colors[1], label="gen", capsize=cs, elinewidth=el)
+(l3, caps3, _) = ax.errorbar(range(9), 1-np.ones(9)*np.mean(dr_accs), yerr=np.ones(9)*np.std(dr_accs, ddof=1)/se_div, color=colors[2], label="dialect", capsize=cs, elinewidth=el)
 # ax.set_title("average error across users")
 
 dashes = [9, 3]  # 10 points on, 5 off, 100 on, 5 off
