@@ -12,7 +12,7 @@ sns.set_context("paper", font_scale=1.0,)
 # matplotlib.rcParams['font.size'] = 13
 nbins=4
 
-colors = sns.cubehelix_palette(3, start=.75, rot=-.75)
+colors = sns.xkcd_palette(["amber", "faded green", "dusty purple"])
 # fig_dir = os.getcwd()
 # fig_dir = "/Users/crankshaw/ModelServingPaper/osdi_2016/figs"
 fig_dir = "/Users/giuliozhou/Research/RISE/ModelServingPaper/nsdi_2017/figs"

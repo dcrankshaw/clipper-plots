@@ -6,7 +6,7 @@ import os
 import pandas as pd
 import sys
 import seaborn as sns
-import statsmodels.formula.api as smf
+# import statsmodels.formula.api as smf
 import utils
 
 sns.set_style("darkgrid")
@@ -93,7 +93,7 @@ def plot_latencies(ax, results, figsize, colors):
             ax.set_xticks(np.arange(len(lats))*width*(num_bars + space) + width*(num_bars/2.0) - 1.3)
             ax.set_xticklabels(model_names, rotation=30, ha="center")
         offset += 1
-    ax.set_ylim(0, 40000)
+    ax.set_ylim(0, 50000)
     ax.set_xlim(-0.3, ax.get_xlim()[1])
     ax.set_ylabel("P99 Latency ($\mu$s)")
     ax.locator_params(nbins=4, axis="y")
@@ -141,7 +141,8 @@ if __name__=='__main__':
     figsize = (4.0,2.0)
     fig, (ax_thru, ax_lat) = plt.subplots(nrows=2, figsize=figsize, sharex=True)
     # colors = sns.color_palette("Set1", n_colors=8, desat=.5)
-    colors = sns.color_palette("cubehelix", n_colors=3)
+    # colors = sns.color_palette("cubehelix", n_colors=3)
+    colors = sns.cubehelix_palette(3, start=.75, rot=-.75)
     plot_thrus(ax_thru, results, figsize, colors)
     plot_latencies(ax_lat, results, figsize, colors)
     # plot_batch_sizes(ax_batch, results, figsize, colors)

@@ -45,7 +45,9 @@ def plot_timit():
     accs = np.mean(data, axis=0)
     accs = accs[::-1]
     # errs = np.std(data, axis=0) / np.sqrt(len(data[:,0]))
-    fig, ax = plt.subplots()
+    # fig, ax = plt.subplots(figsize=(3,1.5))
+    fig = plt.figure(figsize=(4,1.5))
+    ax = plt.gca()
     ax.locator_params(tight=True,nbins=nbins)
     # ax.errorbar(range(1,len(accs) + 1), accs, yerr=errs)
     # ax.plot(range(1,len(accs) + 1), accs)
@@ -57,7 +59,7 @@ def plot_timit():
     ax.set_xlabel("Stragglers")
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
-    fig.set_size_inches((width, height))
+    # fig.set_size_inches((width, height))
     # plt.tight_layout()
 
     fig.savefig(fig_dir + '/' + 'timit_anytime_acc' +'.pdf',bbox_inches='tight')
