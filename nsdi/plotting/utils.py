@@ -31,9 +31,9 @@ def barchart_label(ax, rects, size=None, hmult=1.05, rot=0):
         if size is not None:
             ax.text(rect.get_x() + rect.get_width()/2., hmult*height,
                     '%d' % int(height), size=size,
-                    ha='center', va='bottom',rotation=rot)
+                    ha='left', va='bottom',rotation=rot)
         else:
             ax.text(rect.get_x() + rect.get_width()/2., hmult*height,
                     '%d' % int(height),
-                    ha='center', va='bottom',rotation=rot)
+                    ha='left', va='bottom',rotation=rot)
 

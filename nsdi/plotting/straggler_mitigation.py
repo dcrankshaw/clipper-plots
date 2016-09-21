@@ -7,7 +7,7 @@ import sys
 import seaborn as sns
 import utils
 sns.set_style("white")
-sns.set_context("paper", font_scale=1.0,)
+sns.set_context("paper", font_scale=1.2,)
 
 """
     NOTES:
@@ -69,20 +69,24 @@ def plot_straggler_mitigation():
     # print tgs.index.values
     # print tgs["clipper_p99","mean"].values
     tgs.columns.get_level_values(0)
-    fig, (ax_lat, ax_in_time) = plt.subplots(nrows=2, sharex=False, figsize=(4,3), gridspec_kw = {'height_ratios':[2, 1.5]})
+    # fig, (ax_lat, ax_in_time) = plt.subplots(ncols=2, sharex=False, figsize=(4,3), gridspec_kw = {'height_ratios':[2, 1.5]})
+    fig, (ax_lat, ax_in_time) = plt.subplots(ncols=2, sharex=False, figsize=(6,2))
+
     plot_line(tgs["clipper_p99"], ax_lat, "No Stragglers P99", colors[0], "o")
     plot_line(tgs["clipper_mean_lat"], ax_lat, "No Stragglers Mean", colors[0], "o", ls="--")
     plot_line(tgs["blocking_p99"], ax_lat, "Stragglers P99", colors[2], "v")
     plot_line(tgs["blocking_mean_lat"], ax_lat, "Stragglers Mean", colors[2], "v", ls="--")
     plot_line(tgs["in_time_mean"], ax_in_time, "P99", colors[1], None)
     plot_line(tgs["in_time_p99"], ax_in_time, "Mean", colors[1], None, ls="--")
-    print(tgs["blocking_mean_lat"]["mean"])
-    ax_lat.legend(loc=0, ncol=2)
-    ax_lat.set_ylim(0, 300)
+    # print(tgs["blocking_mean_lat"]["mean"])
+    ax_lat.legend(loc=0, ncol=1)
+    ax_lat.set_ylim(0, 400)
     ax_lat.set_ylabel("Latency (ms)")
+    ax_lat.set_xlabel("Size of ensemble")
     ax_in_time.set_ylabel("% Ensemble Missing")
     ax_in_time.set_xlabel("Size of ensemble")
     ax_in_time.set_ylim(0, 100)
+    fig.subplots_adjust(wspace=0.3)
     fname = "%s/straggler_mitigation.pdf" % (fig_dir)
     plt.savefig(fname, bbox_inches='tight')
     print(fname)

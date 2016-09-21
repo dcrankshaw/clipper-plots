@@ -10,7 +10,7 @@ import statsmodels.formula.api as smf
 import utils
 
 sns.set_style("darkgrid")
-sns.set_context("paper", font_scale=0.8,)
+sns.set_context("paper", font_scale=1.0,)
 
 # sns.set_palette("Paired")
 # sns.set_style("whitegrid", {"axes.grid": "False"})
@@ -57,18 +57,19 @@ def plot_thrus(ax, results, figsize, colors):
         model_names = [name_map[m] for m in model_names]
         cur_rect = ax.bar(np.arange(len(rates))*width*(num_bars+ space) + width*offset, rates, color=colors[offset], width=width, label=strat)
         if strat == "Adaptive":
-            utils.barchart_label(ax, cur_rect, 6, hmult=1.1, rot=15)
+            utils.barchart_label(ax, cur_rect, 7, rot=40)
         else:
-            utils.barchart_label(ax, cur_rect, 6, rot=15)
+            utils.barchart_label(ax, cur_rect, 7, rot=40)
         if offset == 0:
             ax.set_xticks(np.arange(len(rates))*width*(num_bars + space) + width*(num_bars/2.0))
             ax.set_xticklabels(model_names, rotation=0, ha="center")
         offset += 1
-    ax.set_ylim(0, 65000)
+    ax.set_ylim(0, 70000)
     ax.set_xlim(-0.3, ax.get_xlim()[1])
     ax.set_ylabel("Throughput (qps)")
+    ax.locator_params(nbins=4, axis="y")
 
-    ax.legend(frameon=True, bbox_to_anchor=(0.0, 1.02, 1.0, .102), loc=3,
+    ax.legend(frameon=True, bbox_to_anchor=(0.0, 1.07, 1.0, .097), loc=3,
                 ncol=3, mode="expand", borderaxespad=0.05, fontsize=7,)
 
 def plot_latencies(ax, results, figsize, colors):
@@ -85,16 +86,17 @@ def plot_latencies(ax, results, figsize, colors):
         model_names = [name_map[m] for m in model_names]
         cur_rect = ax.bar(np.arange(len(lats))*width*(num_bars+ space) + width*offset, lats, color=colors[offset], width=width, label=strat)
         if strat == "Adaptive":
-            utils.barchart_label(ax, cur_rect, 6, hmult=1.20, rot=15)
+            utils.barchart_label(ax, cur_rect, 7, rot=40)
         else:
-            utils.barchart_label(ax, cur_rect, 6, rot=15)
+            utils.barchart_label(ax, cur_rect, 7, rot=40)
         if offset == 0:
             ax.set_xticks(np.arange(len(lats))*width*(num_bars + space) + width*(num_bars/2.0) - 1.3)
-            ax.set_xticklabels(model_names, rotation=25, ha="center")
+            ax.set_xticklabels(model_names, rotation=30, ha="center")
         offset += 1
     ax.set_ylim(0, 40000)
     ax.set_xlim(-0.3, ax.get_xlim()[1])
     ax.set_ylabel("P99 Latency ($\mu$s)")
+    ax.locator_params(nbins=4, axis="y")
     # ax.legend(frameon=True, bbox_to_anchor=(0.0, 1.02, 1.0, .102), loc=3,
     #             ncol=3, mode="expand", borderaxespad=0.05, fontsize=7,)
     #
@@ -126,6 +128,7 @@ def plot_batch_sizes(ax, results, figsize, colors):
     ax.set_ylim(0, 1800)
     ax.set_xlim(-0.3, ax.get_xlim()[1])
     ax.set_ylabel("Batch Size")
+    ax.locator_params(nbins=3, axis="y")
     # ax.legend(frameon=True, bbox_to_anchor=(0.0, 1.02, 1.0, .102), loc=3,
     #             ncol=3, mode="expand", borderaxespad=0.05, fontsize=7,)
     #
