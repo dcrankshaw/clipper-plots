@@ -55,7 +55,7 @@ def plot_wait_times():
     colors[1] = colors[2]
 
     # fig, (ax_thru, ax_lat, ax_batch) = plt.subplots(nrows=3,figsize=(2.5,3), sharex=True)
-    fig, (ax_thru, ax_lat, ax_batch) = plt.subplots(nrows=3,figsize=(2.7,1.7), sharex=True)
+    fig, (ax_thru, ax_lat, ax_batch) = plt.subplots(nrows=3,figsize=(3.0,2.0), sharex=True)
 
     ax_thru.plot(spark_df["wait_time"], spark_df["model_thruput"], marker="o", ms=4.5,  label="Spark SVM", color=colors[0])
     ax_thru.plot(sklearn_df["wait_time"], sklearn_df["model_thruput"], marker="^", ms=4.5, label="Scikit-Learn SVM", color=colors[1])
