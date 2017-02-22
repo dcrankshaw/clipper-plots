@@ -26,15 +26,19 @@ def get_results_files(results_dir):
             results_files.append(name)
     return results_files
 
-def barchart_label(ax, rects, size=None, hmult=1.05, rot=0, ha='center'):
+def barchart_label(ax, rects, size=None, hmult=1.05, rot=0, ha='center', bottom=0.0, label=None):
     for rect in rects:
         height = rect.get_height()
+        height += bottom
+        if label is None:
+            label = '%d' % int(height)
+        label_height = rect.get_height() * hmult + bottom
         if size is not None:
-            ax.text(rect.get_x() + rect.get_width()/2., hmult*height,
-                    '%d' % int(height), size=size,
+            ax.text(rect.get_x() + rect.get_width()/2., label_height,
+                    label, size=size,
                     ha=ha, va='bottom',rotation=rot)
         else:
-            ax.text(rect.get_x() + rect.get_width()/2., hmult*height,
-                    '%d' % int(height),
+            ax.text(rect.get_x() + rect.get_width()/2., label_height,
+                    label,
                     ha=ha, va='bottom',rotation=rot)
 
