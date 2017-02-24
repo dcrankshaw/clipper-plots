@@ -68,7 +68,7 @@ l2.set_dashes(dashes)
 dashes = [3, 3]  # 10 points on, 5 off, 100 on, 5 off
 l3.set_dashes(dashes)
 
-ax.set_xlabel("Updates")
+ax.set_xlabel("Feedback")
 ax.set_ylabel("Error")
 cap_width = 1
 for cap in caps1:

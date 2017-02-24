@@ -13,9 +13,8 @@ sns.set_style("darkgrid")
 sns.set_context("paper", font_scale=0.9,)
 
 
-# fig_dir = utils.NSDI_FIG_DIR
+fig_dir = utils.NSDI_FIG_DIR
 # fig_dir = os.path.abspath(".")
-fig_dir = os.path.expanduser("~/model-serving/clipper_paper/ModelServingPaper/nsdi_2017/figs2")
 results_dir = os.path.abspath("../results/tf_serving_comparison")
 
 name_map = {
@@ -169,13 +168,16 @@ def plot_tf_vs_clipper_latency_breakdown(figsize, colors):
     num_bars = 3
 
     thruput = {
-        "MNIST": {"tf_serving": 22920.62122, "cpp_rpc": 22269.9215161283, "python": 19537.55802702},
-        "CIFAR-10": {"tf_serving": 5293.848952, "cpp_rpc": 5472.43992468725, "python": 4571.24833224948},
-        "ImageNet": {"tf_serving": 56.84785542, "cpp_rpc": 52.5174842517487, "python": 47.911036839022}
+        "MNIST": {"tf_serving": 23138.97775, "cpp_rpc": 22269.9215161283, "python": 19537.55802702},
+        "CIFAR-10": {"tf_serving": 5519.06325867273, "cpp_rpc": 5472.43992468725, "python": 4571.24833224948},
+        "ImageNet": {"tf_serving": 56.8478554203664, "cpp_rpc": 52.5174842517487, "python": 47.911036839022}
         }
     latencies = {
         "MNIST": {
-            "tf_serving": {"total": 43647.37351},
+            "tf_serving": {
+                "total": 43023.83531,
+                "predict": 23332.2489604292
+            },
             "cpp_rpc": {
                 "total": 45951.8576325,
                 "read": 1015.040495,
@@ -192,7 +194,11 @@ def plot_tf_vs_clipper_latency_breakdown(figsize, colors):
             }
         },
         "CIFAR-10": {
-            "tf_serving": {"total": 47036.4517},
+            "tf_serving": {
+                "total": 47036.4517,
+                "predict": 31334.0177498288
+                # "predict": 21334.0177498288
+            },
             "cpp_rpc": {
                 "total": 46754.26,
                 "read": 1016.433575,
@@ -209,7 +215,10 @@ def plot_tf_vs_clipper_latency_breakdown(figsize, colors):
             }
         },
         "ImageNet": {
-            "tf_serving": {"total": 561807.9518},
+            "tf_serving": {
+                "total": 561807.9518,
+                "predict": 286199.7538
+            },
             "cpp_rpc": {
                 "total": 608976.06,
                 "read": 11717.84932,
@@ -230,7 +239,7 @@ def plot_tf_vs_clipper_latency_breakdown(figsize, colors):
 
     p99 = {
         "MNIST": {
-            "tf_serving": {"total": 44204},
+            "tf_serving": {"total": 45331},
             "cpp_rpc": {
                 "total": 47536.592,
                 "read": 1873.915,
@@ -303,49 +312,88 @@ def plot_tf_vs_clipper_latency_breakdown(figsize, colors):
         cur_p99 = p99[m]
 
         #first plot tf_serving with no breakdown
-        offset = 0
-        system = "tf_serving"
-        err = (cur_p99[system]["total"] - cur_lat[system]["total"]) / 1000.0
-        cur_rect = ax_thru.bar(width*offset, cur_thru[system],
-                                color=colors[offset], width=width, label=name_map[system])
-        utils.barchart_label(ax_thru, cur_rect, 7)
-        cur_rect = ax_lat.bar(width*offset, cur_lat[system]["total"] / 1000.0,
-                                color=colors[offset], width=width, label=name_map[system])
-        ax_lat.errorbar(width*offset + (width / 2), cur_lat[system]["total"] / 1000.0,
-                        yerr=[(0,), (err,)], ecolor='r', capthick=0.3, elinewidth=0.3)
-        utils.barchart_label(ax_lat, cur_rect, 7, hmult=1.12)
+        # offset = 0
+        # system = "tf_serving"
+        # err = (cur_p99[system]["total"] - cur_lat[system]["total"]) / 1000.0
+        # cur_rect = ax_thru.bar(width*offset, cur_thru[system],
+        #                         color=colors[offset], width=width, label=name_map[system])
+        # utils.barchart_label(ax_thru, cur_rect, 7)
+        # cur_rect = ax_lat.bar(width*offset, cur_lat[system]["total"] / 1000.0,
+        #                         color=colors[offset], width=width, label=name_map[system])
+        # ax_lat.errorbar(width*offset + (width / 2), cur_lat[system]["total"] / 1000.0,
+        #                 yerr=[(0,), (err,)], ecolor='r', capthick=0.3, elinewidth=0.3)
+        # utils.barchart_label(ax_lat, cur_rect, 7, hmult=1.12)
 
 
-        for system in ["cpp_rpc", "python"]:
-            offset += 1
+        for (offset, system) in enumerate(["tf_serving", "cpp_rpc", "python"]):
+            # offset += 1
             cur_rect = ax_thru.bar(width*offset, cur_thru[system],
                                 color=colors[offset], width=width, label=name_map[system])
             utils.barchart_label(ax_thru, cur_rect, 7)
             cur_bottom = 0.0
             patterns = ('o', '//', '\\', 'x', 'o', 'O', '.', "*")
-            # for (stage_num, stage) in enumerate(["read", "queue", "predict", "copy", "total"]):
-            for (stage_num, stage) in enumerate(["queue", "predict", "total"]):
-                if stage != "total":
-                    cur_rect = ax_lat.bar(width*offset, cur_lat[system][stage] / 1000.0,
-                                        color=colors[offset], width=width, bottom=cur_bottom,
-                                        # hatch=patterns[stage_num]
-                                        )
-                    
-                    utils.barchart_label(ax_lat, cur_rect, 7, hmult=0.4, bottom = cur_bottom, label=stage)
+
+            ################################
+            # plot predict bar:
+            stage = "predict"
+            if system != "tf_serving":
+                cur_rect = ax_lat.bar(width*offset, cur_lat[system][stage] / 1000.0,
+                                    color=colors[offset], width=width, bottom=cur_bottom,
+                                    # hatch=patterns[stage_num]
+                                    )
+                utils.barchart_label(ax_lat, cur_rect, 7, hmult=0.4, bottom = cur_bottom, label=stage)
+                cur_bottom += cur_lat[system][stage] / 1000.0
+                print(cur_bottom)
+
+            #############################################
+            # Plot queue bar
+            if system != "tf_serving":
+                stage = "queue"
+                cur_rect = ax_lat.bar(width*offset, cur_lat[system][stage] / 1000.0,
+                                    color=colors[offset], width=width, bottom=cur_bottom,
+                                    # hatch=patterns[stage_num]
+                                    )
+                utils.barchart_label(ax_lat, cur_rect, 7, hmult=0.4, bottom = cur_bottom, label=stage)
+                cur_bottom += cur_lat[system][stage] / 1000.0
+                print(cur_bottom)
+
+            #############################################
+            # Plot total bar
+
+            stage = "total"
+            cur_rect = ax_lat.bar(width*offset, cur_lat[system][stage] / 1000.0 - cur_bottom,
+                                color=colors[offset], width=width, bottom=cur_bottom)
+            err = (cur_p99[system][stage] - cur_lat[system][stage]) / 1000.0
+            ax_lat.errorbar(width*offset + (width / 2), cur_lat[system][stage] / 1000.0,
+                            yerr=[(0,), (err,)], ecolor='r', capthick=0.3, elinewidth=0.3)
+            cur_rect.set_label(name_map[system])
+            utils.barchart_label(ax_lat, cur_rect, 7, hmult=1.12, bottom = cur_bottom)
 
 
-                    cur_bottom += cur_lat[system][stage] / 1000.0
-                    print(cur_bottom)
-
-
-                else:
-                    cur_rect = ax_lat.bar(width*offset, cur_lat[system][stage] / 1000.0 - cur_bottom,
-                                        color=colors[offset], width=width, bottom=cur_bottom)
-                    err = (cur_p99[system][stage] - cur_lat[system][stage]) / 1000.0
-                    ax_lat.errorbar(width*offset + (width / 2), cur_lat[system][stage] / 1000.0,
-                                    yerr=[(0,), (err,)], ecolor='r', capthick=0.3, elinewidth=0.3)
-                    cur_rect.set_label(name_map[system])
-                    utils.barchart_label(ax_lat, cur_rect, 7, hmult=1.12, bottom = cur_bottom)
+            # # for (stage_num, stage) in enumerate(["read", "queue", "predict", "copy", "total"]):
+            # for (stage_num, stage) in enumerate(["queue", "predict", "total"]):
+            #     if stage != "total":
+            #         # if "queue" in cur_lat[system]:
+            #         cur_rect = ax_lat.bar(width*offset, cur_lat[system][stage] / 1000.0,
+            #                             color=colors[offset], width=width, bottom=cur_bottom,
+            #                             # hatch=patterns[stage_num]
+            #                             )
+            #         
+            #         utils.barchart_label(ax_lat, cur_rect, 7, hmult=0.4, bottom = cur_bottom, label=stage)
+            #
+            #
+            #         cur_bottom += cur_lat[system][stage] / 1000.0
+            #         print(cur_bottom)
+            #
+            #
+            #     else:
+            #         cur_rect = ax_lat.bar(width*offset, cur_lat[system][stage] / 1000.0 - cur_bottom,
+            #                             color=colors[offset], width=width, bottom=cur_bottom)
+            #         err = (cur_p99[system][stage] - cur_lat[system][stage]) / 1000.0
+            #         ax_lat.errorbar(width*offset + (width / 2), cur_lat[system][stage] / 1000.0,
+            #                         yerr=[(0,), (err,)], ecolor='r', capthick=0.3, elinewidth=0.3)
+            #         cur_rect.set_label(name_map[system])
+            #         utils.barchart_label(ax_lat, cur_rect, 7, hmult=1.12, bottom = cur_bottom)
         ax_thru.get_xaxis().set_visible(False)
         ax_thru.set_ylabel("Throughput")
         ax_lat.set_ylabel("Mean Lat.\n(ms)")
@@ -367,9 +415,9 @@ if __name__=='__main__':
     figsize = (4.5,3)
     # figsize = (4*4.5,4*3)
     # colors = sns.cubehelix_palette(3, start=.75, rot=-.75)
-    colors = sns.cubehelix_palette(3, start=.2, rot=-.6)
-    colors.reverse()
-    # colors = sns.color_palette("cubehelix", n_colors=3)
+    # colors = sns.cubehelix_palette(3, start=.2, rot=-.6)
+    colors = sns.cubehelix_palette(3, dark=0.6, light=0.95, rot=-.6, reverse=True)
     # plot_thrus_latency(figsize, colors)
     # plot_tf_vs_clipper_cpp(figsize, colors)
+
     plot_tf_vs_clipper_latency_breakdown(figsize, colors)

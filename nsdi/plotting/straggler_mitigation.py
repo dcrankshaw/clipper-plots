@@ -6,7 +6,8 @@ import pandas as pd
 import sys
 import seaborn as sns
 import utils
-sns.set_style("white")
+# sns.set_style("white")
+sns.set_style("whitegrid")
 sns.set_context("paper", font_scale=1.2,)
 
 """
@@ -30,6 +31,7 @@ sns.set_context("paper", font_scale=1.2,)
 """
 
 fig_dir = utils.NSDI_FIG_DIR
+# fig_dir = os.path.abspath(".")
 
 log_loc = os.path.abspath("../results/straggler_mitigation")
 # colors = sns.color_palette("Set1", n_colors=8, desat=.5)
@@ -90,8 +92,8 @@ def plot_straggler_mitigation():
 
     fig = plt.figure(figsize=(4,1.5))
     ax_in_time = plt.gca()
-    plot_line(tgs["in_time_mean"], ax_in_time, "P99", colors[1], None)
-    plot_line(tgs["in_time_p99"], ax_in_time, "Mean", colors[1], None, ls="--")
+    plot_line(tgs["in_time_mean"], ax_in_time, "P99", colors[2], None)
+    plot_line(tgs["in_time_p99"], ax_in_time, "Mean", colors[2], None, ls="--")
     ax_in_time.set_ylabel("% Ensemble Missing")
     ax_in_time.set_xlabel("Size of ensemble")
     ax_in_time.set_ylim(0, 100)
@@ -113,6 +115,28 @@ def plot_straggler_mitigation():
     # fig.savefig(fname, bbox_inches=extent.expanded(1.35, 1.7))
     # print(fname)
 
+
+def plot_ensemble_accuracy():
+    # accuracies = [0.7825, 0.7598, 0.8394, 0.8592, 0.8748, 0.8848, 0.8924, 0.8954, 0.8982, 0.9007, 0.9059, 0.9088, 0.911, 0.9111, 0.9117, 0.9139]
+    trials = np.array([[0.9146, 0.9117, 0.9113, 0.9094, 0.9082, 0.9051, 0.9014, 0.8976, 0.8965, 0.8863, 0.8787, 0.8708, 0.8656, 0.8467, 0.7788, 0.8173], [0.9165, 0.9159, 0.9128, 0.9109, 0.9084, 0.9067, 0.9062, 0.9028, 0.8992, 0.8916, 0.8877, 0.881, 0.8656, 0.8451, 0.7805, 0.8005], [0.9133, 0.9121, 0.9134, 0.913, 0.9124, 0.907, 0.9043, 0.9008, 0.8961, 0.8904, 0.8843, 0.8748, 0.856, 0.8255, 0.7524, 0.7984], [0.9117, 0.9119, 0.9108, 0.9075, 0.9046, 0.9032, 0.899, 0.8947, 0.8922, 0.8916, 0.8847, 0.8755, 0.8588, 0.8274, 0.7595, 0.7838], [0.9142, 0.9126, 0.9101, 0.9086, 0.9077, 0.9031, 0.8993, 0.8959, 0.8906, 0.8866, 0.8748, 0.8705, 0.8589, 0.8316, 0.7336, 0.7572], [0.9129, 0.9105, 0.9077, 0.9055, 0.9029, 0.8992, 0.8999, 0.8938, 0.8877, 0.8837, 0.8739, 0.865, 0.8457, 0.819, 0.7419, 0.7649]])
+    trials = np.flip(trials, axis=1)
+
+    means = np.mean(trials, axis=0)
+    errs = np.std(trials, axis=0)
+    fig = plt.figure(figsize=(4,1.5))
+    ax_acc = plt.gca()
+    # ax_acc.plot(range(1,len(accuracies) + 1), accuracies, color=colors[2])
+    ax_acc.errorbar(range(1,len(means) + 1), means, yerr=errs, color=colors[2])
+    ax_acc.set_ylabel("Accuracy")
+    ax_acc.set_xlabel("Size of ensemble")
+    ax_acc.set_ylim(0.75, 1)
+    # ax_acc.legend(loc=0, prop={'size':8})
+    fig.subplots_adjust(wspace=0.3)
+    fname = "%s/straggler_mitigation_ensemble_acc.pdf" % (fig_dir)
+    fig.savefig(fname, bbox_inches='tight')
+    print(fname)
+
     
 if __name__=="__main__":
     plot_straggler_mitigation()
+    plot_ensemble_accuracy()
