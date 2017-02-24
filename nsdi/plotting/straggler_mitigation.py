@@ -7,7 +7,7 @@ import sys
 import seaborn as sns
 import utils
 # sns.set_style("white")
-sns.set_style("whitegrid")
+sns.set_style("darkgrid")
 sns.set_context("paper", font_scale=1.2,)
 
 """
@@ -35,7 +35,9 @@ fig_dir = utils.NSDI_FIG_DIR
 
 log_loc = os.path.abspath("../results/straggler_mitigation")
 # colors = sns.color_palette("Set1", n_colors=8, desat=.5)
-colors = sns.cubehelix_palette(4, start=0.5, rot=-0.75, dark=0.2, light=0.75)
+# colors = sns.cubehelix_palette(2, start=0.1, rot=-0.4, dark=0.1, light=0.5)
+colors = sns.cubehelix_palette(2, start=1.2, rot=0.5, dark=0.0, light=0.4)
+# colors = sns.color_palette('deep', 2)
 
 def extract_results(i, df, fname):
     with open(os.path.join(log_loc, fname), "r") as f:
@@ -77,8 +79,8 @@ def plot_straggler_mitigation():
     ax_lat = plt.gca()
     plot_line(tgs["clipper_p99"], ax_lat, "Straggler Mitigation P99", colors[0], "o")
     plot_line(tgs["clipper_mean_lat"], ax_lat, "Straggler Mitigation Mean", colors[0], "o", ls="--")
-    plot_line(tgs["blocking_p99"], ax_lat, "Stragglers P99", colors[2], "v")
-    plot_line(tgs["blocking_mean_lat"], ax_lat, "Stragglers Mean", colors[2], "v", ls="--")
+    plot_line(tgs["blocking_p99"], ax_lat, "Stragglers P99", colors[1], "v")
+    plot_line(tgs["blocking_mean_lat"], ax_lat, "Stragglers Mean", colors[1], "v", ls="--")
     # plot_line(tgs["in_time_mean"], ax_in_time, "P99", colors[1], None)
     # plot_line(tgs["in_time_p99"], ax_in_time, "Mean", colors[1], None, ls="--")
     print(tgs["blocking_mean_lat"]["mean"])
@@ -92,8 +94,8 @@ def plot_straggler_mitigation():
 
     fig = plt.figure(figsize=(4,1.5))
     ax_in_time = plt.gca()
-    plot_line(tgs["in_time_mean"], ax_in_time, "P99", colors[2], None)
-    plot_line(tgs["in_time_p99"], ax_in_time, "Mean", colors[2], None, ls="--")
+    plot_line(tgs["in_time_mean"], ax_in_time, "P99", colors[1], None)
+    plot_line(tgs["in_time_p99"], ax_in_time, "Mean", colors[1], None, ls="--")
     ax_in_time.set_ylabel("% Ensemble Missing")
     ax_in_time.set_xlabel("Size of ensemble")
     ax_in_time.set_ylim(0, 100)
@@ -125,8 +127,8 @@ def plot_ensemble_accuracy():
     errs = np.std(trials, axis=0)
     fig = plt.figure(figsize=(4,1.5))
     ax_acc = plt.gca()
-    # ax_acc.plot(range(1,len(accuracies) + 1), accuracies, color=colors[2])
-    ax_acc.errorbar(range(1,len(means) + 1), means, yerr=errs, color=colors[2])
+    # ax_acc.plot(range(1,len(accuracies) + 1), accuracies, color=colors[1])
+    ax_acc.errorbar(range(1,len(means) + 1), means, yerr=errs, color=colors[1])
     ax_acc.set_ylabel("Accuracy")
     ax_acc.set_xlabel("Size of ensemble")
     ax_acc.set_ylim(0.75, 1)
