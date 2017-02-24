@@ -70,7 +70,7 @@ def plot_thrus(ax, results, figsize, colors):
         offset += 1
     ax.set_ylim(0, 70000)
     ax.set_xlim(-0.3, ax.get_xlim()[1])
-    ax.set_ylabel("Throughput (qps)")
+    ax.set_ylabel("Throughput\n(qps)")
     ax.locator_params(nbins=4, axis="y")
 
     ax.legend(frameon=True, bbox_to_anchor=(0.0, 1.07, 1.0, .097), loc=3,
@@ -99,7 +99,7 @@ def plot_latencies(ax, results, figsize, colors):
         offset += 1
     ax.set_ylim(0, 50000)
     ax.set_xlim(-0.3, ax.get_xlim()[1])
-    ax.set_ylabel("P99 Latency ($\mu$s)")
+    ax.set_ylabel("P99 Latency\n($\mu$s)")
     ax.locator_params(nbins=4, axis="y")
     # ax.legend(frameon=True, bbox_to_anchor=(0.0, 1.02, 1.0, .102), loc=3,
     #             ncol=3, mode="expand", borderaxespad=0.05, fontsize=7,)
