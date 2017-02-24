@@ -24,7 +24,7 @@ NOTES:
 """
 
 fig_dir = utils.NSDI_FIG_DIR
-# fig_dir = "test"
+# fig_dir = os.path.abspath(".")
 log_loc = os.path.abspath("../results/gpu_scaling_10g_network")
 
 
@@ -61,32 +61,39 @@ def plot_gpu_scaling():
     num_reps, agg_thrus, mean_thrus, mean_lats, p99_lats = zip(*[extract_results(r,  "conv") for r in results])
     slow_net_num_reps, slow_net_agg_thrus, slow_net_mean_thrus = one_gbps_results
 
-    colors = sns.color_palette("bright", n_colors=4, desat=.5)
-    fig, (ax_thru, ax_lat) = plt.subplots(nrows=2, sharex=True, figsize=(4,3))
-    ax_thru.plot(num_reps, agg_thrus, color=colors[0], label="Agg 10Gbps")
-    ax_thru.scatter(num_reps, agg_thrus, color=colors[0])
-    ax_thru.plot(slow_net_num_reps, slow_net_agg_thrus, color=colors[2], label="Agg 1Gbps")
-    ax_thru.scatter(slow_net_num_reps, slow_net_agg_thrus, color=colors[2])
-    ax_thru.plot(num_reps, mean_thrus, color=colors[0], linestyle="dashed", label="Mean 10Gbps")
-    ax_thru.plot(slow_net_num_reps, slow_net_mean_thrus, color=colors[2], linestyle="dashed", label="Mean 1Gbps")
+    vol = 7
+
+    # colors = sns.color_palette("bright", n_colors=4, desat=.5)
+    colors = sns.cubehelix_palette(4, start=0.5, rot=-0.75, dark=0.1, light=0.6)
+    fig, (ax_thru, ax_lat) = plt.subplots(nrows=2, sharex=True, figsize=(4,2.2))
+    ax_thru.plot(num_reps, np.array(agg_thrus) / 10000.0, color=colors[0], marker="o", ms=vol, label="Agg 10Gbps")
+    ax_thru.scatter(num_reps, np.array(agg_thrus) / 10000.0, color=colors[0], marker="o", s=vol)
+    ax_thru.plot(slow_net_num_reps, np.array(slow_net_agg_thrus) / 10000.0, color=colors[2], marker="d", ms=vol, label="Agg 1Gbps")
+    ax_thru.scatter(slow_net_num_reps, np.array(slow_net_agg_thrus) / 10000.0, color=colors[2], marker="d", s=vol)
+    ax_thru.plot(num_reps, np.array(mean_thrus) / 10000.0, color=colors[0], linestyle="dashed", label="Mean 10Gbps")
+    ax_thru.plot(slow_net_num_reps, np.array(slow_net_mean_thrus) / 10000.0, color=colors[2], linestyle="dashdot", label="Mean 1Gbps")
 
     ax_lat.plot(num_reps, np.array(mean_lats) / 1000.0, color=colors[0], linestyle="dashed", label="Mean 10Gbps")
-    ax_lat.plot(num_reps, np.array(p99_lats)  / 1000.0, color=colors[0], label="P99 10Gbps")
-    ax_lat.plot(num_reps, np.array(one_gbps_mean_lats) / 1000.0, color=colors[2], linestyle="dashed", label="Mean 1Gbps")
-    ax_lat.plot(num_reps, np.array(one_gbps_p99_lats) / 1000.0 , color=colors[2], label="P99 1Gbps")
+    ax_lat.plot(num_reps, np.array(p99_lats)  / 1000.0, color=colors[0], marker="o", ms=vol, label="P99 10Gbps")
+    ax_lat.plot(num_reps, np.array(one_gbps_mean_lats) / 1000.0, color=colors[2], linestyle="dashdot", label="Mean 1Gbps")
+    ax_lat.plot(num_reps, np.array(one_gbps_p99_lats) / 1000.0 , color=colors[2], marker="d", ms=vol, label="P99 1Gbps")
 
 
 
 
 
     # ax_thru.plot((0,4.2), np.ones(2)*19929.846938776, color=colors[3], linestyle="dotted", label = "Network bandwidth (1Gbps)")
-    ax_thru.set_ylabel("Throughput (qps)")
+    ax_thru.set_ylabel("Throughput\n(10K qps)")
     ax_lat.set_ylabel("Latency (ms)")
     ax_lat.set_xlabel("Number of Replicas")
     ax_thru.legend(loc=0, ncol=2)
     ax_lat.legend(loc=0, ncol=2)
     ax_thru.set_xlim(0.8, 4.2)
-    ax_thru.set_ylim(0, 110000)
+    ax_thru.set_ylim(0, 11)
+    ax_lat.locator_params(nbins=3)
+    ax_thru.locator_params(nbins=3)
+    ax_lat.xaxis.set_ticks(range(1, 5))
+    fig.subplots_adjust(hspace=0.12)
     fname = "%s/gpu_replicas_scaling.pdf" % (fig_dir)
     plt.savefig(fname, bbox_inches='tight')
     print(fname)
