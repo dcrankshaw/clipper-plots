@@ -12,6 +12,10 @@ import utils
 sns.set_style("darkgrid")
 sns.set_context("paper", font_scale=0.9,)
 
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+
 
 fig_dir = utils.NSDI_FIG_DIR
 # fig_dir = os.path.abspath(".")

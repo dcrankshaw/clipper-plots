@@ -10,6 +10,10 @@ import utils
 sns.set_style("white")
 sns.set_context("paper", font_scale=1.0,)
 
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+
 """
 NOTES: Both models are linear SVMs, one trained in Spark,
 on in Scikit-Learn. The batch wait timeout (x-axis) refers

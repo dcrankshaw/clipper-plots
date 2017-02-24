@@ -12,6 +12,10 @@ import utils
 sns.set_style("darkgrid")
 sns.set_context("paper", font_scale=1.0,)
 
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+
 # sns.set_palette("Paired")
 # sns.set_style("whitegrid", {"axes.grid": "False"})
 # sns.set_style("white")

@@ -10,6 +10,10 @@ import utils
 sns.set_style("darkgrid")
 sns.set_context("paper", font_scale=1.2,)
 
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+
 """
     NOTES:
     This experiment examines the increase in mean and p99 latency

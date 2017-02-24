@@ -31,6 +31,9 @@ fig_dir = utils.NSDI_FIG_DIR
 sns.set_style("darkgrid")
 sns.set_context("paper", font_scale=0.75,)
 
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 
 def find_backtrack_points(batches, lats, k=False):
     bt_batches = []

@@ -7,6 +7,10 @@ import os
 #sns.set_style("white")
 sns.set_context("paper", font_scale=1.0)
 
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+
 # color = sns.color_palette('bright', n_colors=4, desat=.5)
 color = sns.cubehelix_palette(4, start=.75, rot=-.75)
 
